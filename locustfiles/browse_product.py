@@ -36,4 +36,5 @@ class WebUser(HttpUser):
     #     result = response.json()
     #     print(result)
     # self.cart_id = result['id']
+    #
         

@@ -28,6 +28,7 @@ dj-database-url = "*"
 whitenoise = {extras = ["brotli"] }
 virtualenvwrapper = "*"
 psycopg2 = "*"
+locust = "*"
 
 [dev-packages]
 pytest = "*"

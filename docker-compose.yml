@@ -1,4 +1,4 @@
-version: '2.2'
+version: '3'
 services:
   web:
     build: .
@@ -49,6 +49,19 @@ services:
       - redis
     volumes:
       - .:/app
+  master:
+    image: locustio/locust
+    ports:
+      - "8089:8089"
+    volumes:
+      - /home/andrew/PycharmProjects/storeback/locustfiles:/mnt/locust
+    command: -f /mnt/locust/browse_product.py --master -H http://master:8089
+
+  worker:
+    image: locustio/locust
+    volumes:
+      - /home/andrew/PycharmProjects/storeback/locustfiles:/mnt/locust
+    command: -f /mnt/locust/browse_product.py --worker --master-host master
   flower:
     build: .
     command: celery -A storefront flower
