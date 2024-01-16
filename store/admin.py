@@ -9,7 +9,9 @@ from . import models
 
 
 """Editing Children Using Inlines"""
-class OrderItemInline(admin.TabularInline): # or admin.StackedInline
+
+
+class OrderItemInline(admin.TabularInline):  # or admin.StackedInline
     model = models.OrderItem
     min_num = 1
     max_num = 5
@@ -28,10 +30,10 @@ class OrderAdmin(admin.ModelAdmin):
     """what we gonna edit"""
     list_editable = ['payment_status']
     list_filter = ['customer']
-    
 
 
 """Custom filter"""
+
 
 class InventoryFilter(admin.SimpleListFilter):
     title = 'inventory'
@@ -51,7 +53,6 @@ class InventoryFilter(admin.SimpleListFilter):
             return queryset.filter(inventory__lt=10)
         if self.value() == self.filter_2:
             return queryset.filter(inventory__gt=99)
-
 
 
 @admin.register(models.Product)
@@ -99,16 +100,35 @@ class ProductAdmin(admin.ModelAdmin):
         self.message_user(
             request,
             f'{updated_count} products were successfully updated',
-            messages.ERROR # from django.contrib import admin, messages
+            messages.ERROR  # from django.contrib import admin, messages
         )
+
+
+class CountProductFilter(admin.SimpleListFilter):
+    title = 'products'
+    parameter_name = 'products'
+    filter_1 = '>1'
+    """should takes 2 method"""
+
+    def lookups(self, request: Any, model_admin: Any) -> list[tuple[Any, str]]:
+        return [
+            (self.filter_1, 'Yes'),
+
+        ]
+
+    def queryset(self, request: Any, queryset: QuerySet[Any]) -> QuerySet[Any] | None:
+        if self.value() == self.filter_1:
+            return queryset.filter(product_count__gt=0)
+
 
 @admin.register(models.Collection)
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ['title', 'products_count']
+    list_filter = [CountProductFilter]
     search_fields = ['title']
     """computed field"""
     """adding sorting"""
-    @admin.display(ordering='products_count')
+    @admin.display(ordering='product_count')
     def products_count(self, collection):
         url = (
             reverse('admin:store_product_changelist')
@@ -120,7 +140,7 @@ class CollectionAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         return super().get_queryset(request).annotate(
-            product_count=Count('product')
+            product_count=Count('products')
         )
 
 
@@ -132,7 +152,7 @@ class CustomerAdmin(admin.ModelAdmin):
     list_per_page = 10
 
     """adding link on another page"""
-
+    @admin.display(ordering='orders')
     def orders(self, customer):
         url = (
             reverse('admin:store_order_changelist')

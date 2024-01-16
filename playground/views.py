@@ -19,8 +19,6 @@ from store.models import Order
 
 """Complex Lookups using q object (AND operator)"""
 
-# @transaction.atomic()
-
 
 def say_hello(request):
     """Executing RAW sequel queries"""
