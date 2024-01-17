@@ -21,7 +21,8 @@ from rest_framework.viewsets import ModelViewSet
 
 
 class ProductVievSet(ModelViewSet):  # or ReadOnlyModelViewSet, only for GETing
-    queryset = Product.objects.select_related('collection').all()
+    queryset = Product.objects.annotate(
+        reviews_count=Count('reviews')).all()
     serializer_class = ProductSerializer
 
     def get_serializer_context(self):
@@ -74,11 +75,11 @@ class CollectionViewSet(ModelViewSet):
     queryset = Collection.objects.annotate(  # type: ignore
         products_count=Count('products')).all()  # type: ignore
     serializer_class = CollectionSerializer
-    
+
     def destroy(self, request, *args, **kwargs):
         if Product.objects.filter(collection_id=kwargs['pk']).count() > 0:
             return Response({'error': f'Can not be deleted because collection has products'})
-        
+
         return super().destroy(request, *args, **kwargs)
 
 
@@ -86,12 +87,20 @@ class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.annotate(
         orders_count=Count('orders')).all()
     serializer_class = CustomerSerializer
-    
+
     def destroy(self, request, *args, **kwargs):
-        if Order.objects.filter(customer_id=kwargs['pk']).count() > 0:  # type: ignore
+        # type: ignore
+        if Order.objects.filter(customer_id=kwargs['pk']).count() > 0:
             return Response({'error': f"Customer can not be deleted because it has orders"})
         return super().destroy(request, *args, **kwargs)
-    
+
+
 class ReviewViewSet(ModelViewSet):
-    queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    # queryset = Review.objects.all()
+
+    def get_queryset(self):
+        return Review.objects.filter(product_id=self.kwargs['product_pk'])
+
+    def get_serializer_context(self):
+        return {'product_id': self.kwargs['product_pk']}

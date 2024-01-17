@@ -14,20 +14,24 @@ class CollectionSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = ['id', 'date', 'product', 'name', 'description']
-
+        fields = ['id', 'date', 'name', 'description']
+        
+    def create(self, validated_data):
+        product_id = self.context['product_id']
+        return Review.objects.create(product_id=product_id, **validated_data)
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'title', 'slug', 'inventory',
-                'price', 'price_with_tax', 'collection']
+                'price', 'price_with_tax', 'collection', 'reviews_count']
     price = serializers.DecimalField(
         # if we rename field we have to linked it with
         max_digits=6, decimal_places=2, source='unit_price')
     # sourse field adding source module in a field paramert
     price_with_tax = serializers.SerializerMethodField(
         method_name='calculate_tax')  # """for adding aditional field"""
+    reviews_count = serializers.IntegerField(read_only=True)
     """Serializing Relationships"""
     """Method 1 (Primary Key)"""
     # collection = serializers.PrimaryKeyRelatedField(
