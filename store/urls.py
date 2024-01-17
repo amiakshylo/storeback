@@ -5,6 +5,7 @@ router = DefaultRouter()
 router.register('products', views.ProductVievSet)
 router.register('collections', views.CollectionViewSet)
 router.register('customers', views.CustomerViewSet)
+router.register('reviews', views.ReviewViewSet)
 
 # URLConf
 urlpatterns = router.urls

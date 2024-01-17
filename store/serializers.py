@@ -1,15 +1,20 @@
-from tkinter import ALL
 from rest_framework import serializers
 from decimal import Decimal
-from store.models import Customer, Order, Product, Collection
+from store.models import Customer, Product, Collection, Review
 
 
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
         fields = ['id', 'title', 'products_count']
-        
+
     products_count = serializers.IntegerField(read_only=True)
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['id', 'date', 'product', 'name', 'description']
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -54,7 +59,6 @@ class ProductSerializer(serializers.ModelSerializer):
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ['id', 'first_name', 'last_name', 'email', 'phone', 'orders_count']
+        fields = ['id', 'first_name', 'last_name',
+                'email', 'phone', 'orders_count']
     orders_count = serializers.IntegerField(read_only=True)
-    
-    

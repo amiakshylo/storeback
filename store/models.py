@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator
 
 
+
 class Promotion(models.Model):
     description = models.CharField(max_length=255)
     discount = models.FloatField()
@@ -43,6 +44,12 @@ class Product(models.Model):
     class Meta:
         ordering = ['title']
 
+class Review(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='rewiews')
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    
 
 class Customer(models.Model):
     MEMBERSHIP_BRONZE = 'B'

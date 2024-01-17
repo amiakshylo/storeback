@@ -4,8 +4,8 @@ from django.db.models.aggregates import Max, Min, Avg, Sum, Count
 from django.db.models.functions import Concat
 from django.db.models import Q, F, Value, Func, ExpressionWrapper, DecimalField
 from requests import delete, get
-from .models import Customer, Order, OrderItem, Product, Collection
-from .serializers import CollectionSerializer, CustomerSerializer, ProductSerializer
+from .models import Customer, Order, OrderItem, Product, Collection, Review
+from .serializers import CollectionSerializer, CustomerSerializer, ProductSerializer, ReviewSerializer
 """insted of using built-in django classes HttpResponse and HttpResponse
 we should use resr_framefork classes
 """
@@ -91,4 +91,7 @@ class CustomerViewSet(ModelViewSet):
         if Order.objects.filter(customer_id=kwargs['pk']).count() > 0:  # type: ignore
             return Response({'error': f"Customer can not be deleted because it has orders"})
         return super().destroy(request, *args, **kwargs)
-
+    
+class ReviewViewSet(ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
