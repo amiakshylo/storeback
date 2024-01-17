@@ -3,10 +3,10 @@ from . import views
 
 # URLConf
 urlpatterns = [
-    path('products/', views.product_list),
-    path('products/<int:id>/', views.product_detail),  # """aply converter to parametr 'id', int: """
-    path('collections/<int:id>/', views.collection_detail, name='collection-detail'),
-    path('collections/', views.collection_list),
-    path('customers/', views.customer_list),
-    path('customers/<int:id>/', views.customer_detail)
+    path('products/', views.ProductList.as_view()),
+    path('products/<int:id>/', views.ProductDetail.as_view()),  # """aply converter to parametr 'id', int: """
+    path('collections/<int:id>/', views.CollectionDetail.as_view(), name='collection-detail'),
+    path('collections/', views.CollectionList.as_view()),
+    path('customers/', views.CustomerList.as_view()),
+    path('customers/<int:id>/', views.CustomerDetail.as_view())
 ]
