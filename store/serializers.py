@@ -26,11 +26,10 @@ class ProductSerializer(serializers.ModelSerializer):
     """Serializing Relationships"""
     """Method 1 (Primary Key)"""
     # collection = serializers.PrimaryKeyRelatedField(
-    #     queryset = Collection.objects.all()
-    # )
+    #     queryset = Collection.objects.all())
     """Method 2 (String)"""
     """This methos requies sellecting releted in views module"""
-    collection = serializers.StringRelatedField()
+    # collection = serializers.StringRelatedField()
     """Method 3"""
     """nested object"""
     # collection = CollectionSerializer()
