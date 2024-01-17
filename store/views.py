@@ -4,7 +4,7 @@ from django.db.models.aggregates import Max, Min, Avg, Sum, Count
 from django.db.models.functions import Concat
 from django.db.models import Q, F, Value, Func, ExpressionWrapper, DecimalField
 from requests import delete, get
-from .models import Customer, Product, Collection
+from .models import Customer, Order, OrderItem, Product, Collection
 from .serializers import CollectionSerializer, CustomerSerializer, ProductSerializer
 """insted of using built-in django classes HttpResponse and HttpResponse
 we should use resr_framefork classes
@@ -27,12 +27,10 @@ class ProductVievSet(ModelViewSet):  # or ReadOnlyModelViewSet, only for GETing
     def get_serializer_context(self):
         return {'request': self.request}
 
-    def delete(self, request, pk):
-        product = get_object_or_404(Product, pk=pk)
-        if product.orderitems.count() > 0:  # type: ignore
+    def destroy(self, request, *args, **kwargs):
+        if OrderItem.objects.filter(product_id=kwargs['pk']).count() > 0:
             return Response({'error': 'Product can not be deleted because it is associated with an order item '}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-        product.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return super().destroy(request, *args, **kwargs)
 
     """If we wanna have some logic for creating queryset or serializer
     for example some condition"""
@@ -76,27 +74,21 @@ class CollectionViewSet(ModelViewSet):
     queryset = Collection.objects.annotate(  # type: ignore
         products_count=Count('products')).all()  # type: ignore
     serializer_class = CollectionSerializer
-
-    def delete(self, request, pk):
-        collection = get_object_or_404(Collection, pk=pk)  # type: ignore
-        products_count = collection.products.count()  # type: ignore
-        if products_count > 0:
-            return Response({'error': f'Can not be deleted because collection has {products_count} products'})
-        collection = get_object_or_404(Collection, pk=pk)  # type: ignore
-        collection.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    def destroy(self, request, *args, **kwargs):
+        if Product.objects.filter(collection_id=kwargs['pk']).count() > 0:
+            return Response({'error': f'Can not be deleted because collection has products'})
+        
+        return super().destroy(request, *args, **kwargs)
 
 
 class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.annotate(
         orders_count=Count('orders')).all()
     serializer_class = CustomerSerializer
+    
+    def destroy(self, request, *args, **kwargs):
+        if Order.objects.filter(customer_id=kwargs['pk']).count() > 0:  # type: ignore
+            return Response({'error': f"Customer can not be deleted because it has orders"})
+        return super().destroy(request, *args, **kwargs)
 
-    def delete(self, request, pk):
-        customer = get_object_or_404(Customer.objects.annotate(
-            orders_count=Count('orders')), pk=pk)
-        orders_count = customer.orders.count()  # type: ignore
-        if orders_count > 0:  # type: ignore
-            return Response({'error': f"Customer can not be deleted because it has {orders_count} orders"})
-        customer.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
