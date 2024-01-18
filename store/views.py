@@ -3,7 +3,8 @@ from django.shortcuts import get_object_or_404
 from django.db.models.aggregates import Max, Min, Avg, Sum, Count
 from django.db.models.functions import Concat
 from django.db.models import Q, F, Value, Func, ExpressionWrapper, DecimalField
-from requests import delete, get
+from django_filters.rest_framework import DjangoFilterBackend
+from store.filters import ProductFilter
 from .models import Customer, Order, OrderItem, Product, Collection, Review
 from .serializers import CollectionSerializer, CustomerSerializer, ProductSerializer, ReviewSerializer
 """insted of using built-in django classes HttpResponse and HttpResponse
@@ -21,16 +22,10 @@ from rest_framework.viewsets import ModelViewSet
 
 
 class ProductVievSet(ModelViewSet):  # or ReadOnlyModelViewSet, only for GETing
-    
+    queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    
-    def get_queryset(self):
-        queryset = Product.objects.all()
-        collection_id = self.request.query_params.get('collection_id') # type: ignore
-        if collection_id is not None:
-            queryset= queryset.filter(collection_id=collection_id)
-        return queryset
-            
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ProductFilter
 
     def get_serializer_context(self):
         return {'request': self.request}
