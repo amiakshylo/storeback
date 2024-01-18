@@ -1,13 +1,9 @@
-from typing import Collection
-
-from django.db.models.aggregates import Max, Min, Avg, Sum, Count
+from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from store.filters import ProductFilter
+from rest_framework.filters import SearchFilter
 from .models import Customer, Order, OrderItem, Product, Collection, Review
 from .serializers import CollectionSerializer, CustomerSerializer, ProductSerializer, ReviewSerializer
-"""insted of using built-in django classes HttpResponse and HttpResponse
-we should use resr_framefork classes
-"""
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -16,8 +12,9 @@ from rest_framework.viewsets import ModelViewSet
 class ProductVievSet(ModelViewSet):  # or ReadOnlyModelViewSet, only for GETing
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = ProductFilter
+    search_fields = ['title', 'description']
 
     def get_serializer_context(self):
         return {'request': self.request}
