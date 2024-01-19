@@ -1,14 +1,20 @@
 from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from .pagination import DefaultPagination
 from .filters import ProductFilter, ReviewFilter
-from .models import Customer, Order, OrderItem, Product, Collection, Review
-from .serializers import CollectionSerializer, CustomerSerializer, OrderSerializer, ProductSerializer, ReviewSerializer
+from .models import Cart, Customer, Order, OrderItem, Product, Collection, Review
+from .serializers import CartSerializer, CollectionSerializer, CustomerSerializer, OrderSerializer, ProductSerializer, ReviewSerializer
+
+
+class CartViewSet(CreateModelMixin, RetrieveModelMixin, GenericViewSet):
+    serializer_class = CartSerializer
+    queryset = Cart.objects.prefetch_related('items__product').all()
 
 
 class ProductVievSet(ModelViewSet):  # or ReadOnlyModelViewSet, only for GETing
@@ -33,8 +39,8 @@ class ProductVievSet(ModelViewSet):  # or ReadOnlyModelViewSet, only for GETing
 class CollectionViewSet(ModelViewSet):
     serializer_class = CollectionSerializer
     queryset = Collection.objects.annotate(
-        products_count=Count('products')).all()   
-            
+        products_count=Count('products')).all()
+
     def destroy(self, request, *args, **kwargs):
         if Product.objects.filter(collection_id=kwargs['pk']).count() > 0:
             return Response({'error': f'Can not be deleted because collection has products'})
@@ -79,4 +85,3 @@ class OrderViewSet(ModelViewSet):
             return Order.objects.filter(customer_id=customer_pk)
         else:
             return Order.objects.select_related('customer').all()
-
