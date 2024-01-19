@@ -1,9 +1,9 @@
 from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
-from store.filters import ProductFilter
+from store.filters import ProductFilter, ReviewFilter
 from rest_framework.filters import SearchFilter
 from .models import Customer, Order, OrderItem, Product, Collection, Review
-from .serializers import CollectionSerializer, CustomerSerializer, ProductSerializer, ReviewSerializer
+from .serializers import CollectionSerializer, CustomerSerializer, OrderSerializer, ProductSerializer, ReviewSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -51,10 +51,30 @@ class CustomerViewSet(ModelViewSet):
 
 class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
-    # queryset = Review.objects.all()
-
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_class = ReviewFilter
+    
+    
     def get_queryset(self):
-        return Review.objects.filter(product_id=self.kwargs['product_pk'])
+        product_pk = self.kwargs.get('product_pk')
+        if product_pk is not None:
+            return Review.objects.filter(product_id=product_pk)
+        else:
+            # Handle the case when 'product_pk' is not present in kwargs
+            return Review.objects.all()
 
-    def get_serializer_context(self):
-        return {'product_id': self.kwargs['product_pk']}
+    
+    def get_serializer_context(self, *args, **kwargs):
+        return {'product_id': self.kwargs.get('product_pk')}
+    
+    
+class OrderViewSet(ModelViewSet):
+
+    serializer_class = OrderSerializer
+    
+    def get_queryset(self):
+        customer_pk = self.kwargs.get('customer_pk')
+        if customer_pk is not None:
+            return Order.objects.filter(customer_id=customer_pk)
+        else:
+            return Order.objects.select_related('customer').all()

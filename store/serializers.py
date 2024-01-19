@@ -1,6 +1,7 @@
+from dataclasses import fields
 from rest_framework import serializers
 from decimal import Decimal
-from store.models import Customer, Product, Collection, Review
+from store.models import Customer, Order, OrderItem, Product, Collection, Review
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -19,6 +20,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         product_id = self.context['product_id']
         return Review.objects.create(product_id=product_id, **validated_data)
+        
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,7 +39,7 @@ class ProductSerializer(serializers.ModelSerializer):
     # collection = serializers.PrimaryKeyRelatedField(
     #     queryset = Collection.objects.all())
     """Method 2 (String)"""
-    """This methos requies sellecting releted in views module"""
+    """This methods requies sellecting releted in views module"""
     # collection = serializers.StringRelatedField()
     """Method 3"""
     """nested object"""
@@ -66,3 +68,9 @@ class CustomerSerializer(serializers.ModelSerializer):
         fields = ['id', 'first_name', 'last_name',
                 'email', 'phone', 'orders_count']
     orders_count = serializers.IntegerField(read_only=True)
+    
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['id', 'customer', 'payment_status', 'placed_at', 'order_items']
+    
