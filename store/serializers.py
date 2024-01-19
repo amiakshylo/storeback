@@ -60,6 +60,10 @@ class ProductSerializer(serializers.ModelSerializer):
     #     if data['password'] != data['confirm_password']:
     #         return serializers.ValidationError('Passwort do not match')
     #     return data
+    
+    def create(self, validated_data):
+        product_id = self.context['product_id']
+        return Collection.objects.create(product_id=product_id, **validated_data)
 
 
 class CustomerSerializer(serializers.ModelSerializer):
@@ -72,5 +76,5 @@ class CustomerSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ['id', 'customer', 'payment_status', 'placed_at', 'order_items']
+        fields = ['id', 'customer', 'payment_status', 'placed_at']
     
