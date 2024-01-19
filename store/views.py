@@ -1,20 +1,29 @@
 from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
-from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from .pagination import DefaultPagination
 from .filters import ProductFilter, ReviewFilter
-from .models import Cart, Customer, Order, OrderItem, Product, Collection, Review
-from .serializers import CartSerializer, CollectionSerializer, CustomerSerializer, OrderSerializer, ProductSerializer, ReviewSerializer
+from .models import Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
+from .serializers import CartItemSerializer, CartSerializer, CollectionSerializer, CustomerSerializer, OrderSerializer, ProductSerializer, ReviewSerializer
 
 
-class CartViewSet(CreateModelMixin, RetrieveModelMixin, GenericViewSet):
+class CartViewSet(CreateModelMixin,
+                RetrieveModelMixin,
+                DestroyModelMixin,
+                GenericViewSet):
     serializer_class = CartSerializer
     queryset = Cart.objects.prefetch_related('items__product').all()
+    
+    
+class CartItemViewSet(ModelViewSet):
+    queryset = CartItem.objects.select_related('product').all()
+    serializer_class = CartItemSerializer
+    
 
 
 class ProductVievSet(ModelViewSet):  # or ReadOnlyModelViewSet, only for GETing
