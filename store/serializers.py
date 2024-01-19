@@ -16,11 +16,11 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ['id', 'date', 'name', 'description']
-        
+
     def create(self, validated_data):
         product_id = self.context['product_id']
         return Review.objects.create(product_id=product_id, **validated_data)
-        
+
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -60,10 +60,6 @@ class ProductSerializer(serializers.ModelSerializer):
     #     if data['password'] != data['confirm_password']:
     #         return serializers.ValidationError('Passwort do not match')
     #     return data
-    
-    def create(self, validated_data):
-        product_id = self.context['product_id']
-        return Collection.objects.create(product_id=product_id, **validated_data)
 
 
 class CustomerSerializer(serializers.ModelSerializer):
@@ -72,9 +68,9 @@ class CustomerSerializer(serializers.ModelSerializer):
         fields = ['id', 'first_name', 'last_name',
                 'email', 'phone', 'orders_count']
     orders_count = serializers.IntegerField(read_only=True)
-    
+
+
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['id', 'customer', 'payment_status', 'placed_at']
-    
