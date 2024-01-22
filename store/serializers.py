@@ -2,7 +2,7 @@ from dataclasses import fields
 from xml.parsers.expat import model
 from rest_framework import serializers
 from decimal import Decimal
-from .models import Cart, CartItem, Customer, Order, Product, Collection, Review
+from .models import Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -138,4 +138,10 @@ class UpdateCartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
         fields = ['quantity']
+        
+class OrderItemSerializer(serializers.ModelSerializer):   
+    class Meta:
+        model = OrderItem
+        fields = ['id', 'product', 'quantity', 'unit_price']
+    product = SimpleProductSerializer()
         

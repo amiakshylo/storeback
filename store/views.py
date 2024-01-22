@@ -11,7 +11,7 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from .pagination import DefaultPagination
 from .filters import ProductFilter, ReviewFilter
 from .models import Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
-from .serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CustomerSerializer, OrderSerializer, ProductSerializer, ReviewSerializer, UpdateCartItemSerializer
+from .serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CustomerSerializer, OrderItemSerializer, OrderSerializer, ProductSerializer, ReviewSerializer, UpdateCartItemSerializer
 from store import serializers
 
 
@@ -100,7 +100,7 @@ class ReviewViewSet(ModelViewSet):
 
 
 class OrderViewSet(ModelViewSet):
-
+    http_method_names = ['get']
     serializer_class = OrderSerializer
 
     def get_queryset(self):
@@ -109,3 +109,10 @@ class OrderViewSet(ModelViewSet):
             return Order.objects.filter(customer_id=customer_pk)
         else:
             return Order.objects.select_related('customer').all()
+        
+class OrderItemVievSet(ModelViewSet):
+    http_method_names = ['get']
+    serializer_class = OrderItemSerializer
+    
+    def get_queryset(self):
+        return OrderItem.objects.select_related('product').filter(order_id=self.kwargs['order_pk'])
