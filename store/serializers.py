@@ -1,7 +1,7 @@
 
 from rest_framework import serializers
 from decimal import Decimal
-from .models import Cart, CartItem, Customer, Order, Product, Collection, Review
+from .models import Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
 
     
         
@@ -29,7 +29,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'title', 'slug', 'inventory',
-                  'price', 'price_with_tax', 'collection', 'reviews_count']
+                'price', 'price_with_tax', 'collection', 'reviews_count']
     price = serializers.DecimalField(
         # if we rename field we have to linked it with
         max_digits=6, decimal_places=2, source='unit_price')
@@ -110,38 +110,7 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = ['id', 'customer', 'payment_status', 'placed_at']
         
-
-
-class AddCartItemSerializer(serializers.ModelSerializer):
-    product_id = serializers.IntegerField()
-
-    def save(self, **kwargs):
-        cart_id = self.context['cart_id']
-        product_id = self.validated_data['product_id']  # type: ignore
-        quantity = self.validated_data['quantity']  # type: ignore
-
-        try:
-            cart_item = CartItem.objects.get(
-                cart_id=cart_id, product_id=product_id)
-            cart_item.quantity += quantity
-            cart_item.save()
-            self.instance = cart_item
-
-        except CartItem.DoesNotExist:
-            self.instance = CartItem.objects.create(
-                cart_id=cart_id, **self.validated_data)  # type: ignore
-
-        return self.instance
-
-    class Meta:
-        model = CartItem
-        fields = ['id', 'product_id', 'quantity']
-        
-class UpdateCartItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CartItem
-        fields = ['quantity']
-        
+                
 class OrderItemSerializer(serializers.ModelSerializer):   
     class Meta:
         model = OrderItem
