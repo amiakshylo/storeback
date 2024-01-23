@@ -1,7 +1,6 @@
-from email.policy import default
 from django.db import models
 from django.core.validators import MinValueValidator
-from uuid import uuid4, uuid1
+from uuid import uuid4
 
 
 

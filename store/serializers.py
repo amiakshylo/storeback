@@ -1,5 +1,3 @@
-from dataclasses import fields
-from xml.parsers.expat import model
 from rest_framework import serializers
 from decimal import Decimal
 from .models import Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
@@ -27,7 +25,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'title', 'slug', 'inventory',
-                  'price', 'price_with_tax', 'collection', 'reviews_count']
+                'price', 'price_with_tax', 'collection', 'reviews_count']
     price = serializers.DecimalField(
         # if we rename field we have to linked it with
         max_digits=6, decimal_places=2, source='unit_price')
@@ -107,6 +105,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['id', 'customer', 'payment_status', 'placed_at']
+        
 
 
 class AddCartItemSerializer(serializers.ModelSerializer):
@@ -142,6 +141,11 @@ class UpdateCartItemSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):   
     class Meta:
         model = OrderItem
-        fields = ['id', 'product', 'quantity', 'unit_price']
+        fields = ['id', 'product', 'quantity', 'total_price']
     product = SimpleProductSerializer()
+    
+    total_price = serializers.SerializerMethodField()
+    
+    def get_total_price(self, orderitem: OrderItem):
+        return orderitem.quantity * orderitem.product.unit_price
         
