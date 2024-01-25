@@ -151,13 +151,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 """for sfowing a decimal fields in andpoints as decimalfields not as a string """
 REST_FRAMEWORK = {
-    'COERCE_DECIMAL_TO_STRING' : False,
+    'COERCE_DECIMAL_TO_STRING': False,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated'
-    ]
 }
 
 SIMPLE_JWT = {
@@ -173,6 +170,3 @@ DJOSER = {
         'current_user': 'core.serializers.UserSerializer'
     }
 }
-
-
-

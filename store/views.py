@@ -9,6 +9,7 @@ from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyM
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from core import serializers
 
@@ -81,6 +82,12 @@ class CustomerViewSet(CreateModelMixin, DestroyModelMixin,
     
     serializer_class = CustomerSerializer    
     queryset = Customer.objects.all()
+    permission_classes = [IsAuthenticated]
+    
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        return [IsAuthenticated()]
     
     @action(detail=False, methods=['GET', 'PUT'])
     def me(self, request):
