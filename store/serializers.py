@@ -98,11 +98,12 @@ class CartSerializer(serializers.ModelSerializer):
 
 
 class CustomerSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField()
     class Meta:
         model = Customer
-        fields = ['id', 'first_name', 'last_name',
-                'email', 'phone', 'orders_count']
-    orders_count = serializers.IntegerField(read_only=True)
+        fields = ['id', 'user_id',
+                'phone', 'birth_date', 'membership']
+    
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -153,4 +154,6 @@ class UpdateCartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
         fields = ['quantity']
+        
+
         

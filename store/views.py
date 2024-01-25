@@ -5,7 +5,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from requests import request
 from requests import request
 from rest_framework import status
-from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, UpdateModelMixin
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
@@ -73,10 +73,13 @@ class CollectionViewSet(ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
 
-class CustomerViewSet(ModelViewSet):
-    queryset = Customer.objects.annotate(
-        orders_count=Count('orders')).all()
+class CustomerViewSet(CreateModelMixin, DestroyModelMixin,
+                    UpdateModelMixin, RetrieveModelMixin,
+                    GenericViewSet):
+    
     serializer_class = CustomerSerializer
+    
+    queryset = Customer.objects.all()
 
     def destroy(self, request, *args, **kwargs):
         if Order.objects.filter(customer_id=kwargs['pk']).count() > 0:
