@@ -1,10 +1,8 @@
-from typing import Any
+from django.contrib import admin, messages
+from django.db.models.aggregates import Count
+from django.db.models.query import QuerySet
 from django.utils.html import format_html, urlencode
 from django.urls import reverse
-from django.contrib import admin, messages
-from django.db.models.query import QuerySet
-from django.db.models.aggregates import Count
-from django.http.request import HttpRequest
 from . import models
 
 
@@ -42,13 +40,13 @@ class InventoryFilter(admin.SimpleListFilter):
     filter_2 = '>99'
     """should takes 2 method"""
 
-    def lookups(self, request: Any, model_admin: Any) -> list[tuple[Any, str]]:
+    def lookups(self, request, model_admin):
         return [
             (self.filter_1, 'Low'),
             (self.filter_2, 'High')
         ]
 
-    def queryset(self, request: Any, queryset: QuerySet[Any]) -> QuerySet[Any] | None:
+    def queryset(self, request, queryset):
         if self.value() == self.filter_1:
             return queryset.filter(inventory__lt=10)
         if self.value() == self.filter_2:
@@ -110,13 +108,13 @@ class CountProductFilter(admin.SimpleListFilter):
     filter_1 = '>1'
     """should takes 2 method"""
 
-    def lookups(self, request: Any, model_admin: Any) -> list[tuple[Any, str]]:
+    def lookups(self, request):
         return [
             (self.filter_1, 'Yes'),
 
         ]
 
-    def queryset(self, request: Any, queryset: QuerySet[Any]) -> QuerySet[Any] | None:
+    def queryset(self, request, queryset):
         if self.value() == self.filter_1:
             return queryset.filter(product_count__gt=0)
 
@@ -138,21 +136,23 @@ class CollectionAdmin(admin.ModelAdmin):
             }))
         return format_html('<a href="{}">{}</a>', url, collection.product_count)
 
-    def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
+    def get_queryset(self, request):
         return super().get_queryset(request).annotate(
             product_count=Count('products')
         )
 
 
+
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ['first_name', 'last_name', 'membership', "orders"]
+    list_display = ['first_name', 'last_name', 'membership', 'orders']
     list_editable = ['membership']
-    search_fields = ['first_name', 'last_name']
     list_per_page = 10
+    list_select_related = ['user']
+    ordering = ['user__first_name', 'user__last_name']
+    search_fields = ['first_name__istartswith', 'last_name__istartswith']
 
-    """adding link on another page"""
-    @admin.display(ordering='orders')
+    @admin.display(ordering='orders_count')
     def orders(self, customer):
         url = (
             reverse('admin:store_order_changelist')
@@ -160,11 +160,11 @@ class CustomerAdmin(admin.ModelAdmin):
             + urlencode({
                 'customer__id': str(customer.id)
             }))
-        return format_html('<a href="{}">{}</a>', url, customer.orders)
+        return format_html('<a href="{}">{} Orders</a>', url, customer.orders_count)
 
-    def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
+    def get_queryset(self, request):
         return super().get_queryset(request).annotate(
-            orders=Count('order')
+            orders_count=Count('orders')
         )
 
 
