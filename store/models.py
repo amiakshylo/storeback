@@ -66,11 +66,11 @@ class Customer(models.Model):
         (MEMBERSHIP_SILVER, 'Silver'),
         (MEMBERSHIP_GOLD, 'Gold'),
     ]
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     phone = models.CharField(max_length=255)
     birth_date = models.DateField(null=True, blank=True)
     membership = models.CharField(
         max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f'{self.user.first_name} {self.user.last_name}'

@@ -1,12 +1,12 @@
 from django.contrib import admin, messages
 from django.db.models.aggregates import Count
-from django.db.models.query import QuerySet
 from django.utils.html import format_html, urlencode # type: ignore
 from django.urls import reverse
 from . import models
 
 
 """Editing Children Using Inlines"""
+
 
 
 class OrderItemInline(admin.TabularInline):  # or admin.StackedInline
@@ -16,7 +16,6 @@ class OrderItemInline(admin.TabularInline):  # or admin.StackedInline
     autocomplete_fields = ['product']
     """how many rows do we need preloaded"""
     extra = 0
-
 
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
@@ -151,6 +150,7 @@ class CustomerAdmin(admin.ModelAdmin):
     list_select_related = ['user']
     ordering = ['user__first_name', 'user__last_name']
     search_fields = ['first_name__istartswith', 'last_name__istartswith']
+    autocomplete_fields = ['user']
 
     @admin.display(ordering='orders_count')
     def orders(self, customer):
@@ -167,6 +167,3 @@ class CustomerAdmin(admin.ModelAdmin):
             orders_count=Count('orders')
         )
 
-
-"""or"""
-# admin.site.register(models.Collection, CollectionAdmin())
