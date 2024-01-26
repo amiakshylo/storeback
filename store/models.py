@@ -7,6 +7,7 @@ from django.conf import settings
 
 
 
+
 class Promotion(models.Model):
     description = models.CharField(max_length=255)
     discount = models.FloatField()

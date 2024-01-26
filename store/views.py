@@ -1,5 +1,6 @@
 
 
+from logging import raiseExceptions
 from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from requests import request
@@ -15,6 +16,7 @@ from core import serializers
 
 from .pagination import DefaultPagination
 from .filters import ProductFilter, ReviewFilter
+from .permissions import IsAdminOrReadOnly
 from .models import Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
 from .serializers import CartItemSerializer, CartSerializer, CollectionSerializer, CustomerSerializer, OrderItemSerializer, \
 OrderSerializer, ProductSerializer, ReviewSerializer, AddCartItemSerializer, UpdateCartItemSerializer
@@ -54,6 +56,7 @@ class ProductVievSet(ModelViewSet):  # or ReadOnlyModelViewSet, only for GETing
     pagination_class = DefaultPagination
     search_fields = ['title', 'description']
     ordering_fields = ['unit_price', 'last_update']
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_serializer_context(self):
         return {'request': self.request}
@@ -82,25 +85,38 @@ class CustomerViewSet(CreateModelMixin, DestroyModelMixin,
     
     serializer_class = CustomerSerializer    
     queryset = Customer.objects.all()
-    permission_classes = [IsAuthenticated]
     
     def get_permissions(self):
         if self.request.method == 'GET':
             return [AllowAny()]
         return [IsAuthenticated()]
     
+    # @action(detail=False, methods=['GET', 'PUT'])
+    # def me(self, request):
+    #     (customer, created) = Customer.objects.get_or_create(user_id=request.user.id)
+    #     if request.method == 'GET':
+    #         serializer = CustomerSerializer(customer)
+    #         return Response(serializer.data)
+    #     elif request.method == 'PUT':
+    #         serializer = CustomerSerializer(customer, data=request.data)
+    #         serializer.is_valid(raise_exception=True)
+    #         serializer.save()
+    #         return Response(serializer.data)
+        
     @action(detail=False, methods=['GET', 'PUT'])
     def me(self, request):
-        (customer, created) = Customer.objects.get_or_create(user_id=request.user.id)
+        user_id = request.user.id       
+        if user_id is None:
+            return Response({'error': 'User ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        (customer, created) = Customer.objects.get_or_create(user_id=user_id)
         if request.method == 'GET':
             serializer = CustomerSerializer(customer)
-            return Response(serializer.data)
+            return Response(serializer.data)    
         elif request.method == 'PUT':
             serializer = CustomerSerializer(customer, data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
-            return Response(serializer.data)
-    
+            return Response(serializer.data)      
 
 
 class ReviewViewSet(ModelViewSet):
