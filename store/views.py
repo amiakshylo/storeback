@@ -10,7 +10,7 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly, IsAdminUser, DjangoModelPermissions
 from .pagination import DefaultPagination
 from .filters import ProductFilter, ReviewFilter
-from .permissions import IsAdminOrReadOnly
+from .permissions import FullDjangoModelPermissions, IsAdminOrReadOnly
 from .models import Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
 from .serializers import AddOrderItemSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CustomerSerializer, OrderItemSerializer, \
     OrderSerializer, ProductSerializer, ReviewSerializer, AddCartItemSerializer, UpdateCartItemSerializer
@@ -94,7 +94,7 @@ class CollectionViewSet(ModelViewSet):
 class CustomerViewSet(ModelViewSet):
     serializer_class = CustomerSerializer
     queryset = Customer.objects.all()
-    permission_classes = [DjangoModelPermissions]
+    permission_classes = [FullDjangoModelPermissions]
 
     
     @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
@@ -132,6 +132,7 @@ class ReviewViewSet(ModelViewSet):
 class OrderViewSet(ModelViewSet):
     
     serializer_class = OrderSerializer
+    permission_classes = [IsAdminUser]
     
 
     def get_queryset(self):
