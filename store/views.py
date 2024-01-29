@@ -130,8 +130,9 @@ class ReviewViewSet(ModelViewSet):
 
 
 class OrderViewSet(ModelViewSet):
-    # http_method_names = ['get']
+    
     serializer_class = OrderSerializer
+    
 
     def get_queryset(self):
         customer_pk = self.kwargs.get('customer_pk')
@@ -142,14 +143,14 @@ class OrderViewSet(ModelViewSet):
 
 
 class OrderItemVievSet(ModelViewSet):
-    # http_method_names = ['get']
+    
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return AddOrderItemSerializer
         return OrderItemSerializer
 
     def get_queryset(self):
-        return OrderItem.objects.filter(order_id=self.kwargs['order_pk'])
+        return OrderItem.objects.select_related('product').filter(order_id=self.kwargs['order_pk'])
     
     def get_serializer_context(self):
         return {'order_id': self.kwargs.get('order_pk')}

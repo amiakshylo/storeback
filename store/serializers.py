@@ -101,7 +101,7 @@ class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = ['id', 'user_id',
-                  'phone', 'birth_date', 'membership']
+                'phone', 'birth_date', 'membership']
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -113,13 +113,14 @@ class OrderSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = ['id', 'product', 'quantity']
+        fields = ['id', 'product', 'quantity', 'total_price']
     product = SimpleProductSerializer()
+    total_price = serializers.SerializerMethodField()
+    
+    def get_total_price(self, orderitem: OrderItem):
+        return orderitem.product.unit_price * orderitem.quantity
 
-    # total_price = serializers.SerializerMethodField()
-
-    # def get_total_price(self, orderitem: OrderItem):
-    #     return orderitem.quantity * orderitem.product.unit_price
+    
 
 
 class AddOrderItemSerializer(serializers.ModelSerializer):
