@@ -18,15 +18,17 @@ products_router = routers.NestedDefaultRouter(
 products_router.register('reviews', views.ReviewViewSet,
                         basename='product-reviews')
 
+collections_router = routers.NestedDefaultRouter(
+    router, 'collections', lookup='collection')
+collections_router.register(
+    'products', views.ProductVievSet,
+    basename='collection-product')
+
 customers_router = routers.NestedDefaultRouter(
     router, 'customers', lookup='customer')
 customers_router.register('orders', views.OrderViewSet,
                         basename='customer-order')
 
-collections_router = routers.NestedDefaultRouter(
-    router, 'collections', lookup='collection')
-collections_router.register(
-    'products', views.ProductVievSet, basename='collection-product')
 
 cart_router = routers.NestedDefaultRouter(
     router, 'carts', lookup='cart')
@@ -34,7 +36,8 @@ cart_router.register(
     'items', views.CartItemViewSet, basename='cart-items')
 
 orders_router = routers.NestedDefaultRouter(router, 'orders', lookup='order')
-orders_router.register('orderitems', views.OrderItemVievSet, basename='order-items')
+orders_router.register(
+    'orderitems', views.OrderItemVievSet, basename='order-items')
 
 
 # URLConf

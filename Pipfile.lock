@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ab85c3feff72f21340898e426793915c746a46dc835ead385df20d1391a260aa"
+            "sha256": "8f47e5bd70693e8e2339097cfbd595e7bbb5b5673b1637fcbcf03a5899755cf0"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -259,25 +259,6 @@
             "markers": "python_version >= '3.7'",
             "version": "==23.5"
         },
-        "django-phonenumber-field": {
-            "extras": [
-                "phonenumbers"
-            ],
-            "hashes": [
-                "sha256:bc6eaa49d1f9d870944f5280258db511e3a1ba5e2fbbed255488dceacae45d06",
-                "sha256:f9cdb3de085f99c249328293a3b93d4e5fa440c0c8e3b99eb0d0f54748629797"
-            ],
-            "index": "pypi",
-            "markers": "python_version >= '3.8'",
-            "version": "==7.3.0"
-        },
-        "django-phonenumbers": {
-            "hashes": [
-                "sha256:cd617e4ee924f6492e0106d738fea619c95f3659e41dbeb97df83c1f3b51f453"
-            ],
-            "index": "pypi",
-            "version": "==1.0.1"
-        },
         "django-templated-mail": {
             "hashes": [
                 "sha256:8db807effebb42a532622e2d142dfd453dafcd0d7794c4c3332acb90656315f9",
@@ -352,13 +333,6 @@
             ],
             "markers": "python_version >= '3.6'",
             "version": "==3.2.2"
-        },
-        "phonenumbers": {
-            "hashes": [
-                "sha256:9d7863dc8a37e8127f3c9dde65be93a5b46649b779184f8b0a85bdd043b0b293",
-                "sha256:a6c85b53e28410aba2f312255cc8015f384a43e7e241ffb84ca5cde80f094cdf"
-            ],
-            "version": "==8.13.29"
         },
         "pycparser": {
             "hashes": [

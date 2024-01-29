@@ -1,10 +1,9 @@
 
+from dataclasses import fields
+from pyexpat import model
 from rest_framework import serializers
 from decimal import Decimal
 from .models import Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
-
-    
-        
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -29,7 +28,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'title', 'slug', 'inventory',
-                'price', 'price_with_tax', 'collection', 'reviews_count']
+                  'price', 'price_with_tax', 'collection', 'reviews_count']
     price = serializers.DecimalField(
         # if we rename field we have to linked it with
         max_digits=6, decimal_places=2, source='unit_price')
@@ -91,7 +90,6 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = ['id', 'items', 'total_price']
-    
 
     def get_total_price(self, cart):
         return sum([item.quantity * item.product.unit_price for item in cart.items.all()])
@@ -99,30 +97,56 @@ class CartSerializer(serializers.ModelSerializer):
 
 class CustomerSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Customer
         fields = ['id', 'user_id',
-                'phone', 'birth_date', 'membership']
-    
+                  'phone', 'birth_date', 'membership']
 
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['id', 'customer', 'payment_status', 'placed_at']
-        
-                
-class OrderItemSerializer(serializers.ModelSerializer):   
+
+
+class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = ['id', 'product', 'quantity', 'total_price']
+        fields = ['id', 'product', 'quantity']
     product = SimpleProductSerializer()
-    
-    total_price = serializers.SerializerMethodField()
-    
-    def get_total_price(self, orderitem: OrderItem):
-        return orderitem.quantity * orderitem.product.unit_price
+
+    # total_price = serializers.SerializerMethodField()
+
+    # def get_total_price(self, orderitem: OrderItem):
+    #     return orderitem.quantity * orderitem.product.unit_price
+
+
+class AddOrderItemSerializer(serializers.ModelSerializer):
+    product_id = serializers.IntegerField()
+
+    class Meta:
+        model = OrderItem
+        fields = ['id', 'product_id', 'quantity']
+
+    def save(self, **kwargs):
+        order_id = self.context['order_id']
+        product_id = self.validated_data['product_id']  # type: ignore
+        quantity = self.validated_data['quantity']  # type: ignore
         
+
+        try:
+            order_item = OrderItem.objects.get(
+                order_id=order_id, product_id=product_id)
+            order_item.quantity += quantity
+            # product_id.quantity -= quantity
+            order_item.save()
+            self.instance = order_item
+        except OrderItem.DoesNotExist:
+            self.instance = OrderItem.objects.create(
+                order_id=order_id, **self.validated_data) # type: ignore
+
+        return self.instance
 
 
 class AddCartItemSerializer(serializers.ModelSerializer):
@@ -149,11 +173,9 @@ class AddCartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
         fields = ['id', 'product_id', 'quantity']
-        
+
+
 class UpdateCartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
         fields = ['quantity']
-        
-
-        
