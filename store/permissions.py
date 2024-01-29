@@ -13,3 +13,6 @@ class FullDjangoModelPermissions(permissions.DjangoModelPermissions):
         self.perms_map['GET'] = ['%(app_label)s.view_%(model_name)s']
         
         
+class CancelOrderPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user.has_perm('store.cancel_order')
