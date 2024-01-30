@@ -35,9 +35,7 @@ cart_router = routers.NestedDefaultRouter(
 cart_router.register(
     'items', views.CartItemViewSet, basename='cart-items')
 
-orders_router = routers.NestedDefaultRouter(router, 'orders', lookup='order')
-orders_router.register(
-    'orderitems', views.OrderItemVievSet, basename='order-items')
+
 
 
 # URLConf
@@ -49,7 +47,7 @@ urlpatterns = [
     path('', include(customers_router.urls)),
     path('', include(collections_router.urls)),
     path('', include(cart_router.urls)),
-    path('', include(orders_router.urls))
+
 
 
 

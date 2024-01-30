@@ -12,22 +12,21 @@ from .pagination import DefaultPagination
 from .filters import ProductFilter, ReviewFilter
 from .permissions import CancelOrderPermission, FullDjangoModelPermissions, IsAdminOrReadOnly
 from .models import Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
-from .serializers import AddOrderItemSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CustomerSerializer, OrderItemSerializer, \
+from .serializers import AddOrderItemSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CreateOrderSerializer, CustomerSerializer, \
     OrderSerializer, ProductSerializer, ReviewSerializer, AddCartItemSerializer, UpdateCartItemSerializer
 
 
-class CartViewSet(ListModelMixin, CreateModelMixin,
-                RetrieveModelMixin,
-                DestroyModelMixin,
-                GenericViewSet):
+class CartViewSet(CreateModelMixin,
+                  RetrieveModelMixin,
+                  DestroyModelMixin,
+                  GenericViewSet):
     serializer_class = CartSerializer
     queryset = Cart.objects.prefetch_related('items__product').all()
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
 
 
 class CartItemViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'patch', 'delete']
-    
 
     def get_queryset(self):
         return CartItem.objects.select_related('product').filter(cart_id=self.kwargs['cart_pk'])
@@ -51,20 +50,13 @@ class ProductVievSet(ModelViewSet):  # or ReadOnlyModelViewSet, only for GETing
     search_fields = ['title', 'description']
     ordering_fields = ['unit_price', 'last_update']
     permission_classes = [IsAdminOrReadOnly]
-    
+
     def get_queryset(self):
         collection_pk = self.kwargs.get('collection_pk')
         if collection_pk is not None:
             return Product.objects.filter(collection_id=collection_pk)
         else:
             return Product.objects.all()
-        
-
-    # def get_serializer_context(self):
-    #     return {'request': self.request}
-    
-    # def get_serializer_context(self):
-    #     return {'collection_id': self.kwargs.get('collection_pk')}
 
     def destroy(self, request, *args, **kwargs):
         if OrderItem.objects.filter(product_id=kwargs['pk']).count() > 0:
@@ -78,10 +70,7 @@ class CollectionViewSet(ModelViewSet):
     queryset = Collection.objects.annotate(
         products_count=Count('products')).all()
     permission_classes = [IsAdminOrReadOnly]
-    
-    # def get_serializer_context(self):
-    #     return {'collection_id': self.kwargs.get('collection_pk')}
-    
+
     def get_serializer_context(self):
         return {'request': self.request}
 
@@ -96,7 +85,6 @@ class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.all()
     permission_classes = [FullDjangoModelPermissions]
 
-    
     @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
     def me(self, request):
         customer, created = Customer.objects.get_or_create(
@@ -130,32 +118,21 @@ class ReviewViewSet(ModelViewSet):
 
 
 class OrderViewSet(ModelViewSet):
-    
-    serializer_class = OrderSerializer
-    permission_classes = [IsAdminUser]
-    
-    @action(detail=True, permission_classes=[CancelOrderPermission])
-    def cancel_order(self, requared, pk):
-        return Response('ok')
-    
 
-    def get_queryset(self):
-        customer_pk = self.kwargs.get('customer_pk')
-        if customer_pk is not None:
-            return Order.objects.filter(customer_id=customer_pk)
-        else:
-            return Order.objects.select_related('customer').all()
-
-
-class OrderItemVievSet(ModelViewSet):
-    
     def get_serializer_class(self):
         if self.request.method == 'POST':
-            return AddOrderItemSerializer
-        return OrderItemSerializer
+            return CreateOrderSerializer
+        return OrderSerializer
+
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return OrderItem.objects.select_related('product').filter(order_id=self.kwargs['order_pk'])
-    
+        user = self.request.user
+        if user.is_staff:  # type: ignore
+            return Order.objects.all()
+        (customer_id, created) = Customer.objects.only(
+            'id').get_or_create(user_id=user.id) # type: ignore
+        return Order.objects.filter(customer_id=customer_id)
+
     def get_serializer_context(self):
-        return {'order_id': self.kwargs.get('order_pk')}
+        return {'user_id': self.request.user.id} # type: ignore
