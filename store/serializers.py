@@ -103,13 +103,18 @@ class CustomerSerializer(serializers.ModelSerializer):
         model = Customer
         fields = ['id', 'user_id',
                 'phone', 'birth_date', 'membership']
+        
+class UpdateOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['payment_status']
 
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['id', 'customer', 'items', 'payment_status', 'placed_at']
-
+        
 
 class CreateOrderSerializer(serializers.Serializer):
     
