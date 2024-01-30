@@ -118,11 +118,16 @@ class ReviewViewSet(ModelViewSet):
 
 
 class OrderViewSet(ModelViewSet):
-    
+    http_method_names = ['get', 'patch', 'delete', 'head', 'option']
     pagination_class=DefaultPagination
-    permission_classes = [IsAuthenticated]
     
-    def create(self, request, *args, **kwargs):
+    def get_permissions(self):
+        if self.request.method in ['PATCH', 'DELETE']:
+            return [IsAdminUser()]
+        return [IsAuthenticated()]
+    
+    
+    def create(self, request, *args, **kwargs):        
         serializer = CreateOrderSerializer(
             data=request.data,
             context={'user_id': self.request.user.id}) # type: ignore
