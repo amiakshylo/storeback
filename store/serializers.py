@@ -1,8 +1,8 @@
-
 from dataclasses import fields
-from pyexpat import model
+from requests import Response
 from rest_framework import serializers
 from decimal import Decimal
+from django.db import transaction
 from .models import Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
 
 
@@ -28,7 +28,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'title', 'slug', 'inventory',
-                  'price', 'price_with_tax', 'collection', 'reviews_count']
+                'price', 'price_with_tax', 'collection', 'reviews_count']
     price = serializers.DecimalField(
         # if we rename field we have to linked it with
         max_digits=6, decimal_places=2, source='unit_price')
@@ -111,40 +111,32 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class CreateOrderSerializer(serializers.Serializer):
+    
     cart_id = serializers.UUIDField()
-
+    
+    
     def save(self, **kwargs):
-        cart_id = self.validated_data['cart_id']  # type: ignore
-        (customer, created) = Customer.objects.get_or_create(
-            user_id=self.context['user_id'])
-        Order.objects.create(customer=customer)
-        Cart.objects.get(id=cart_id).delete()
+        with transaction.atomic():
+            cart_id = self.validated_data['cart_id'] # type: ignore
+            (customer, created) = Customer.objects.get_or_create(
+                user_id=self.context['user_id'])
+            order = Order.objects.create(customer=customer)
+            cart_items = CartItem.objects.select_related('product').filter(cart_id=cart_id)
+            order_items = [
+                OrderItem(
+                    order=order,
+                    product=item.product,
+                    quantity=item.quantity
+                ) for item in cart_items
+                ]
+            OrderItem.objects.bulk_create(order_items)
+            Cart.objects.filter(pk=cart_id).delete()
+            return order
+            
+        
 
 
-class AddOrderItemSerializer(serializers.ModelSerializer):
-    product_id = serializers.IntegerField()
 
-    class Meta:
-        model = OrderItem
-        fields = ['id', 'product_id', 'quantity']
-
-    def save(self, **kwargs):
-        order_id = self.context['order_id']
-        product_id = self.validated_data['product_id']  # type: ignore
-        quantity = self.validated_data['quantity']  # type: ignore
-
-        try:
-            order_item = OrderItem.objects.get(
-                order_id=order_id, product_id=product_id)
-            order_item.quantity += quantity
-            # product_id.quantity -= quantity
-            order_item.save()
-            self.instance = order_item
-        except OrderItem.DoesNotExist:
-            self.instance = OrderItem.objects.create(
-                order_id=order_id, **self.validated_data)  # type: ignore
-
-        return self.instance
 
 
 class AddCartItemSerializer(serializers.ModelSerializer):

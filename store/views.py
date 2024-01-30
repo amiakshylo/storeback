@@ -12,14 +12,14 @@ from .pagination import DefaultPagination
 from .filters import ProductFilter, ReviewFilter
 from .permissions import CancelOrderPermission, FullDjangoModelPermissions, IsAdminOrReadOnly
 from .models import Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
-from .serializers import AddOrderItemSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CreateOrderSerializer, CustomerSerializer, \
+from .serializers import CartItemSerializer, CartSerializer, CollectionSerializer, CreateOrderSerializer, CustomerSerializer, \
     OrderSerializer, ProductSerializer, ReviewSerializer, AddCartItemSerializer, UpdateCartItemSerializer
 
 
 class CartViewSet(CreateModelMixin,
-                  RetrieveModelMixin,
-                  DestroyModelMixin,
-                  GenericViewSet):
+                RetrieveModelMixin,
+                DestroyModelMixin,
+                GenericViewSet):
     serializer_class = CartSerializer
     queryset = Cart.objects.prefetch_related('items__product').all()
     permission_classes = [IsAuthenticated]
@@ -118,13 +118,24 @@ class ReviewViewSet(ModelViewSet):
 
 
 class OrderViewSet(ModelViewSet):
+    
+    pagination_class=DefaultPagination
+    permission_classes = [IsAuthenticated]
+    
+    def create(self, request, *args, **kwargs):
+        serializer = CreateOrderSerializer(
+            data=request.data,
+            context={'user_id': self.request.user.id}) # type: ignore
+        serializer.is_valid(raise_exception=True)
+        order = serializer.save()
+        serializer = OrderSerializer(order)
+        return Response(serializer.data)
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return CreateOrderSerializer
         return OrderSerializer
 
-    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
@@ -133,6 +144,3 @@ class OrderViewSet(ModelViewSet):
         (customer_id, created) = Customer.objects.only(
             'id').get_or_create(user_id=user.id) # type: ignore
         return Order.objects.filter(customer_id=customer_id)
-
-    def get_serializer_context(self):
-        return {'user_id': self.request.user.id} # type: ignore
