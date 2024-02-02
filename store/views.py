@@ -8,6 +8,8 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly, IsAdminUser, DjangoModelPermissions
+
+from core import serializers
 from .pagination import DefaultPagination
 from .filters import ProductFilter, ReviewFilter
 from .permissions import CancelOrderPermission, FullDjangoModelPermissions, IsAdminOrReadOnly
@@ -79,6 +81,18 @@ class CollectionViewSet(ModelViewSet):
             return Response({'error': f'Can not be deleted because collection has products'})
         return super().destroy(request, *args, **kwargs)
 
+class AddressViewSet(ModelViewSet):
+    queryset = Address.objects.select_related('customer').all()
+    serializer_class = AddressSerializer
+    
+    @action(detail=False, permission_classes=[IsAuthenticated])
+    def me(self, request):
+        address = Address.objects.get(customer_id=request.customer_id)
+        if request.method == 'GET':
+            serializers = AddressSerializer(address)
+            return Response(serializers.data)
+        
+        
 
 class CustomerViewSet(ModelViewSet):
     serializer_class = CustomerSerializer
@@ -87,7 +101,7 @@ class CustomerViewSet(ModelViewSet):
 
     @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
     def me(self, request):
-        customer, created = Customer.objects.get_or_create(
+        customer = Customer.objects.get(
             user_id=request.user.id)
         if request.method == 'GET':
             serializers = CustomerSerializer(customer)
@@ -163,9 +177,8 @@ class OrderViewSet(ModelViewSet):
         return Order.objects.filter(customer_id=customer_id)
     
     
-class AddressViewSet(ModelViewSet):
-    queryset = Address.objects.all()
-    serializer_class = AddressSerializer
+        
+    
     
     
 
