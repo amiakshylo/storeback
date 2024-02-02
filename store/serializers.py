@@ -4,7 +4,7 @@ from requests import Response
 from rest_framework import serializers
 from decimal import Decimal
 from django.db import transaction
-from .models import Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
+from .models import Address, Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -101,13 +101,20 @@ class CartSerializer(serializers.ModelSerializer):
         return sum([item.quantity * item.product.unit_price for item in cart.items.all()])
 
 
+class AddressSerializer(serializers.ModelSerializer):
+    customer_id = serializers.IntegerField()
+    class Meta:
+        model = Address       
+        fields = ['id', 'street', 'city', 'customer_id']
+
 class CustomerSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField(read_only=True)
+    address = AddressSerializer(many=True, read_only=True)
 
     class Meta:
         model = Customer
         fields = ['id', 'user_id',
-                'phone', 'birth_date', 'membership']
+                'phone', 'birth_date', 'membership', 'address']
         
 class UpdateOrderSerializer(serializers.ModelSerializer):
     class Meta:

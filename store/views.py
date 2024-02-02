@@ -11,8 +11,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticate
 from .pagination import DefaultPagination
 from .filters import ProductFilter, ReviewFilter
 from .permissions import CancelOrderPermission, FullDjangoModelPermissions, IsAdminOrReadOnly
-from .models import Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
-from .serializers import CartItemSerializer, CartSerializer, CollectionSerializer, CreateOrderSerializer,  CustomerSerializer, \
+from .models import Address, Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
+from .serializers import AddressSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CreateOrderSerializer,  CustomerSerializer, \
     OrderSerializer, ProductSerializer, ReviewSerializer, AddCartItemSerializer, UpdateCartItemSerializer, UpdateOrderSerializer
 
 
@@ -82,7 +82,7 @@ class CollectionViewSet(ModelViewSet):
 
 class CustomerViewSet(ModelViewSet):
     serializer_class = CustomerSerializer
-    queryset = Customer.objects.all()
+    queryset = Customer.objects.prefetch_related('address').all()
     permission_classes = [FullDjangoModelPermissions]
 
     @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
@@ -117,7 +117,7 @@ class ReviewViewSet(ModelViewSet):
             return Review.objects.all()
 
     def get_permissions(self):
-        print(self.kwargs.get('product_pk'))
+
         if self.request.method in ['GET', 'POST'] and self.kwargs.get('product_pk') is not None:
             return [IsAuthenticatedOrReadOnly()]
         return [IsAdminUser()]                             
@@ -158,6 +158,14 @@ class OrderViewSet(ModelViewSet):
         user = self.request.user
         if user.is_staff:  # type: ignore
             return Order.objects.all()
-        (customer_id, created) = Customer.objects.only(
-            'id').get_or_create(user_id=user.id) # type: ignore
+        customer_id = Customer.objects.only(
+            'id').get(user_id=user.id) # type: ignore
         return Order.objects.filter(customer_id=customer_id)
+    
+    
+class AddressViewSet(ModelViewSet):
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializer
+    
+    
+
