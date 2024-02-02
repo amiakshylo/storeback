@@ -19,14 +19,14 @@ class ReviewSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Review
-        fields = ['id', 'name', 'date', 'description']
+        fields = ['id', 'user', 'date', 'description']
         
-    name = serializers.CharField(read_only=True)
+    user = serializers.CharField(read_only=True)
     
     def create(self, validated_data):
         product_id = self.context['product_id']
-        name = self.context['username']
-        return Review.objects.create(product_id=product_id, name=name, **validated_data)
+        user = self.context['username']
+        return Review.objects.create(product_id=product_id, user=user, **validated_data)
         
 
 

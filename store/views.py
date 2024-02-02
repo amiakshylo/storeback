@@ -124,17 +124,18 @@ class ReviewViewSet(ModelViewSet):
 
     def get_queryset(self):
         product_pk = self.kwargs.get('product_pk')
+        user = self.request.user.username
         if product_pk is not None:
             return Review.objects.filter(product_id=product_pk)
         else:
             # Handle the case when 'product_pk' is not present in kwargs
-            return Review.objects.all()
+            return Review.objects.filter(user=user)
 
-    def get_permissions(self):
+    # def get_permissions(self):
 
-        if self.request.method in ['GET', 'POST'] and self.kwargs.get('product_pk') is not None:
-            return [IsAuthenticatedOrReadOnly()]
-        return [IsAdminUser()]                             
+    #     if self.request.method in ['GET', 'POST'] and self.kwargs.get('product_pk') is not None:
+    #         return [IsAuthenticatedOrReadOnly()]
+    #     return [IsAdminUser()]                             
 
     def get_serializer_context(self, *args, **kwargs):
         username = self.request.user.username # type: ignore
