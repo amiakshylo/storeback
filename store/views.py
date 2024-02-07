@@ -143,7 +143,7 @@ class ReviewViewSet(ModelViewSet):
 
 
 class OrderViewSet(ModelViewSet):
-    http_method_names = ['get', 'patch', 'delete', 'head', 'option']
+    # http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'option']
     pagination_class=DefaultPagination
     
     def get_permissions(self):

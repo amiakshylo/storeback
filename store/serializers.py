@@ -1,6 +1,5 @@
-from dataclasses import fields
 from django.forms import CharField, ValidationError
-from requests import Response
+from store.signals import order_crated
 from rest_framework import serializers
 from decimal import Decimal
 from django.db import transaction
@@ -157,6 +156,9 @@ class CreateOrderSerializer(serializers.Serializer):
                 ]
             OrderItem.objects.bulk_create(order_items)
             Cart.objects.filter(pk=cart_id).delete()
+            
+            order_crated.send_robust(self.__class__, order=order)
+            
             return order
             
         
