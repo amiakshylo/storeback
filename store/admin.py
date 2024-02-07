@@ -1,3 +1,4 @@
+from typing import Any
 from django.contrib import admin, messages
 from django.db.models.aggregates import Count
 from django.utils.html import format_html, urlencode # type: ignore
@@ -37,6 +38,7 @@ class InventoryFilter(admin.SimpleListFilter):
     parameter_name = 'inventory'
     filter_1 = '<10'
     filter_2 = '>99'
+    
     """should takes 2 method"""
 
     def lookups(self, request, model_admin):
@@ -44,6 +46,7 @@ class InventoryFilter(admin.SimpleListFilter):
             (self.filter_1, 'Low'),
             (self.filter_2, 'High')
         ]
+        
 
     def queryset(self, request, queryset):
         if self.value() == self.filter_1:
@@ -107,7 +110,7 @@ class CountProductFilter(admin.SimpleListFilter):
     filter_1 = '>1'
     """should takes 2 method"""
 
-    def lookups(self, request):
+    def lookups(self, request, model_admin):
         return [
             (self.filter_1, 'Yes'),
 
@@ -122,6 +125,7 @@ class CountProductFilter(admin.SimpleListFilter):
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ['title', 'products_count']
     list_filter = [CountProductFilter]
+    autocomplete_fields = ['featured_product']
     search_fields = ['title']
     """computed field"""
     """adding sorting"""

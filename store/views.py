@@ -124,7 +124,7 @@ class ReviewViewSet(ModelViewSet):
 
     def get_queryset(self):
         product_pk = self.kwargs.get('product_pk')
-        user = self.request.user.username
+        user = self.request.user.username # type: ignore
         if product_pk is not None:
             return Review.objects.filter(product_id=product_pk)
         else:
