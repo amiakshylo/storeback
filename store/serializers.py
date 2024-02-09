@@ -46,7 +46,9 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'title', 'slug', 'inventory',
-                'price', 'price_with_tax', 'collection', 'reviews_count']
+                'price', 'price_with_tax', 'collection', 'reviews_count', 'images']
+        
+    images = ProductImageSerializer(many=True, read_only=True)    
     price = serializers.DecimalField(
         # if we rename field we have to linked it with
         max_digits=6, decimal_places=2, source='unit_price')

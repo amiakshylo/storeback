@@ -81,7 +81,7 @@ class ProductVievSet(ModelViewSet):  # or ReadOnlyModelViewSet, only for GETing
         if collection_pk is not None:
             return Product.objects.filter(collection_id=collection_pk)
         else:
-            return Product.objects.all()
+            return Product.objects.prefetch_related('images').all()
 
     def destroy(self, request, *args, **kwargs):
         if OrderItem.objects.filter(product_id=kwargs['pk']).count() > 0:
