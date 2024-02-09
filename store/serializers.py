@@ -1,9 +1,22 @@
+
 from django.forms import CharField, ValidationError
 from store.signals import order_crated
 from rest_framework import serializers
 from decimal import Decimal
 from django.db import transaction
-from .models import Address, Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
+from .models import Address, Cart, CartItem, Customer, Order, OrderItem, Product, Collection, ProductImage, Review
+
+
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ['id', 'image']
+        
+    def create(self, validated_data):
+        product_id = self.context['product_id']
+        return ProductImage.objects.create(product_id=product_id, **validated_data)
+        
+        
 
 
 class CollectionSerializer(serializers.ModelSerializer):

@@ -1,4 +1,6 @@
+import os
 from django.db.models.aggregates import Count
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework.decorators import action
@@ -13,9 +15,30 @@ from core import serializers
 from .pagination import DefaultPagination
 from .filters import ProductFilter, ReviewFilter
 from .permissions import CancelOrderPermission, FullDjangoModelPermissions, IsAdminOrReadOnly
-from .models import Address, Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review
+from .models import Address, Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review, ProductImage
 from .serializers import AddressSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CreateOrderSerializer,  CustomerSerializer, \
-    OrderSerializer, ProductSerializer, ReviewSerializer, AddCartItemSerializer, UpdateCartItemSerializer, UpdateOrderSerializer
+    OrderSerializer, ProductImageSerializer, ProductSerializer, ReviewSerializer, AddCartItemSerializer, UpdateCartItemSerializer, UpdateOrderSerializer
+
+
+class ProductImageViewSet(ModelViewSet):
+    serializer_class = ProductImageSerializer
+    
+    def get_queryset(self):
+        return ProductImage.objects.filter(product_id=self.kwargs['product_pk'])
+
+    def get_serializer_context(self):
+        return {'product_id': self.kwargs['product_pk']}
+    
+    # def destroy(self, request, *args, **kwargs):
+    #     image = get_object_or_404(ProductImage, image=self.kwargs['image'])
+    #     print(image)
+    #     try:
+    #         os.remove(image.image.path)  # Assuming 'image' is the field storing the image path
+    #     except FileNotFoundError:
+    #         pass  # If file doesn't exist, just continue
+    #     image.delete()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 class CartViewSet(CreateModelMixin,
@@ -41,7 +64,7 @@ class CartItemViewSet(ModelViewSet):
         return CartItemSerializer
 
     def get_serializer_context(self):
-        return {'cart_id': self.kwargs.get('cart_pk')}
+        return {'cart_id': self.kwargs['cart_pk']}
 
 
 class ProductVievSet(ModelViewSet):  # or ReadOnlyModelViewSet, only for GETing
@@ -81,18 +104,18 @@ class CollectionViewSet(ModelViewSet):
             return Response({'error': f'Can not be deleted because collection has products'})
         return super().destroy(request, *args, **kwargs)
 
+
 class AddressViewSet(ModelViewSet):
     queryset = Address.objects.select_related('customer').all()
     serializer_class = AddressSerializer
-    
+
     @action(detail=False, permission_classes=[IsAuthenticated])
     def me(self, request):
         address = Address.objects.get(customer_id=request.customer_id)
         if request.method == 'GET':
             serializers = AddressSerializer(address)
             return Response(serializers.data)
-        
-        
+
 
 class CustomerViewSet(ModelViewSet):
     serializer_class = CustomerSerializer
@@ -115,16 +138,14 @@ class CustomerViewSet(ModelViewSet):
 
 class ReviewViewSet(ModelViewSet):
 
-    
     serializer_class = ReviewSerializer
-        
-        
+
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = ReviewFilter
 
     def get_queryset(self):
         product_pk = self.kwargs.get('product_pk')
-        user = self.request.user.username # type: ignore
+        user = self.request.user.username  # type: ignore
         if product_pk is not None:
             return Review.objects.filter(product_id=product_pk)
         else:
@@ -135,27 +156,26 @@ class ReviewViewSet(ModelViewSet):
 
     #     if self.request.method in ['GET', 'POST'] and self.kwargs.get('product_pk') is not None:
     #         return [IsAuthenticatedOrReadOnly()]
-    #     return [IsAdminUser()]                             
+    #     return [IsAdminUser()]
 
     def get_serializer_context(self, *args, **kwargs):
-        username = self.request.user.username # type: ignore
-        return {'product_id': self.kwargs.get('product_pk'), 'username': username}
+        username = self.request.user.username  # type: ignore
+        return {'product_id': self.kwargs['product_pk'], 'username': username}
 
 
 class OrderViewSet(ModelViewSet):
     # http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'option']
-    pagination_class=DefaultPagination
-    
+    pagination_class = DefaultPagination
+
     def get_permissions(self):
         if self.request.method in ['PATCH', 'DELETE']:
             return [IsAdminUser()]
         return [IsAuthenticated()]
-    
-    
-    def create(self, request, *args, **kwargs):        
+
+    def create(self, request, *args, **kwargs):
         serializer = CreateOrderSerializer(
             data=request.data,
-            context={'user_id': self.request.user.id}) # type: ignore
+            context={'user_id': self.request.user.id})  # type: ignore
         serializer.is_valid(raise_exception=True)
         order = serializer.save()
         serializer = OrderSerializer(order)
@@ -168,18 +188,10 @@ class OrderViewSet(ModelViewSet):
             return UpdateOrderSerializer
         return OrderSerializer
 
-
     def get_queryset(self):
         user = self.request.user
         if user.is_staff:  # type: ignore
             return Order.objects.all()
         customer_id = Customer.objects.only(
-            'id').get(user_id=user.id) # type: ignore
+            'id').get(user_id=user.id)  # type: ignore
         return Order.objects.filter(customer_id=customer_id)
-    
-    
-        
-    
-    
-    
-

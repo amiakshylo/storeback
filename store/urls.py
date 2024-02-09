@@ -1,4 +1,3 @@
-from cgitb import lookup
 
 from django.urls import include, path
 from . import views
@@ -12,6 +11,7 @@ router.register('reviews', views.ReviewViewSet, basename='reviews')
 router.register('orders', views.OrderViewSet, basename='orders')
 router.register('carts', views.CartViewSet)
 router.register('address', views.AddressViewSet)
+router.register('images', views.ProductImageViewSet, basename='images')
 
 
 products_router = routers.NestedDefaultRouter(
@@ -36,6 +36,10 @@ cart_router = routers.NestedDefaultRouter(
 cart_router.register(
     'items', views.CartItemViewSet, basename='cart-items')
 
+image_router = routers.NestedDefaultRouter(router, 'products', lookup='product')
+image_router.register('images', views.ProductImageViewSet, basename='product_images')
+
+
 
 
 
@@ -48,6 +52,8 @@ urlpatterns = [
     path('', include(customers_router.urls)),
     path('', include(collections_router.urls)),
     path('', include(cart_router.urls)),
+    path('', include(image_router.urls)),
+    
 
 
 
