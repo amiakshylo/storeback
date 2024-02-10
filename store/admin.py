@@ -1,9 +1,10 @@
-from typing import Any
+from dataclasses import fields
 from django.contrib import admin, messages
 from django.db.models.aggregates import Count
 from django.utils.html import format_html, urlencode # type: ignore
 from django.urls import reverse
 from . import models
+from .models import ProductImage
 
 
 """Editing Children Using Inlines"""
@@ -55,13 +56,18 @@ class InventoryFilter(admin.SimpleListFilter):
             return queryset.filter(inventory__gt=99)
 
 
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    readonly_fields = ['thumbnail']
+    
+    def thumbnail(self, instance):
+        if instance.image.name != '':
+            return format_html(f'<img src="{instance.image.url}" class="thumbnail" />')
+        return ''
+        
+
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
-    """work with form"""
-    """show fields"""
-    # fields = ['title', 'slug']
-    # readonly_fields = ['title']
-    # exclude = ['promotions']
     autocomplete_fields = ['collection']
     prepopulated_fields = {
         'slug': ['title']
@@ -70,13 +76,12 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ['title', 'unit_price',
                     'collection_title', 'inventory_status']
     list_editable = ['unit_price']
-    """adding related field"""
     list_select_related = ['collection']
     list_filter = ['collection', 'last_update', InventoryFilter]
     search_fields = ['title']
     list_per_page = 10
+    inlines = [ProductImageInline]
 
-    """computed (исчесляемое поле) field"""
     @admin.display(ordering='inventory')
     def inventory_status(self, product):
         if 0 > product.inventory < 10:
@@ -86,14 +91,10 @@ class ProductAdmin(admin.ModelAdmin):
         if product.inventory == 0:
             return 'Empty'
         return 'OK'
-    """adding related field"""
-
-    """computed (исчесляемое поле) field"""
 
     def collection_title(self, product):
         return product.collection.title
 
-    """Creatin Custom Action"""
     @admin.action(description='Clear inventory')
     def clear_inventory_action(self, request, queryset):
         updated_count = queryset.update(inventory=0)
@@ -102,6 +103,11 @@ class ProductAdmin(admin.ModelAdmin):
             f'{updated_count} products were successfully updated',
             messages.ERROR  # from django.contrib import admin, messages
         )
+        
+    class Media:
+        css = {
+            'all': ['store/styles.css']
+        }
 
 
 class CountProductFilter(admin.SimpleListFilter):
