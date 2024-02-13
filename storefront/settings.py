@@ -36,6 +36,9 @@ EMAIL_HOST_PASSWORDS = ''
 EMAIL_PORT = 2525
 DEFAULT_FROM_EMAIL = 'from@andrii.com'
 
+ADMINS = [
+    ('Andrii', 'admin@gmail.com')
+]
 
 # Application definition
 
