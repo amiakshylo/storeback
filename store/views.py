@@ -1,4 +1,5 @@
-import os
+
+
 from django.db.models.aggregates import Count
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -106,15 +107,22 @@ class CollectionViewSet(ModelViewSet):
 
 
 class AddressViewSet(ModelViewSet):
-    queryset = Address.objects.select_related('customer').all()
+    queryset = Address.objects.all()
     serializer_class = AddressSerializer
-
-    @action(detail=False, permission_classes=[IsAuthenticated])
-    def me(self, request):
-        address = Address.objects.get(customer_id=request.customer_id)
-        if request.method == 'GET':
-            serializers = AddressSerializer(address)
-            return Response(serializers.data)
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        user = self.request.user.id
+        print(user)
+        if user == 'admin':  # type: ignore
+            return Address.objects.select_related('customer').all()
+        return Address.objects.filter(customer_id=user)
+    
+    def get_serializer_context(self):
+        return {'customer_id': self.kwargs.get('customer_pk')}
+        
+        
+        
 
 
 class CustomerViewSet(ModelViewSet):
@@ -137,11 +145,12 @@ class CustomerViewSet(ModelViewSet):
 
 
 class ReviewViewSet(ModelViewSet):
-
+    
     serializer_class = ReviewSerializer
 
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = ReviewFilter
+    
 
     def get_queryset(self):
         product_pk = self.kwargs.get('product_pk')
@@ -152,15 +161,13 @@ class ReviewViewSet(ModelViewSet):
             # Handle the case when 'product_pk' is not present in kwargs
             return Review.objects.filter(user=user)
 
-    # def get_permissions(self):
-
-    #     if self.request.method in ['GET', 'POST'] and self.kwargs.get('product_pk') is not None:
-    #         return [IsAuthenticatedOrReadOnly()]
-    #     return [IsAdminUser()]
-
+    
     def get_serializer_context(self, *args, **kwargs):
         username = self.request.user.username  # type: ignore
-        return {'product_id': self.kwargs['product_pk'], 'username': username}
+        product_id = self.kwargs.get('product_pk')
+        return {'product_id': product_id, 'username': username}
+    
+    
 
 
 class OrderViewSet(ModelViewSet):

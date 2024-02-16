@@ -116,11 +116,17 @@ class CartSerializer(serializers.ModelSerializer):
 
 
 class AddressSerializer(serializers.ModelSerializer):
-    customer_id = serializers.IntegerField()
+    customer_id = serializers.IntegerField(read_only=True)
     class Meta:
         model = Address       
         fields = ['id', 'street', 'city', 'customer_id']
-
+        
+    def create(self, validated_data):
+        customer_id = self.context['customer_id']
+        return Address.objects.create(customer_id=customer_id, **validated_data)
+        
+        
+        
 class CustomerSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField(read_only=True)
     address = AddressSerializer(many=True, read_only=True)
