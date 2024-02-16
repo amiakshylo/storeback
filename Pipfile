@@ -23,6 +23,7 @@ pytest = "*"
 [dev-packages]
 pytest = "*"
 pytest-django = "*"
+autopep8 = "*"
 
 [requires]
 python_version = "*"
