@@ -24,6 +24,7 @@ pytest = "*"
 pytest = "*"
 pytest-django = "*"
 autopep8 = "*"
+pytest-watch = "*"
 
 [requires]
 python_version = "*"
