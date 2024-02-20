@@ -11,6 +11,7 @@ router.register('reviews', views.ReviewViewSet, basename='reviews')
 router.register('orders', views.OrderViewSet, basename='orders')
 router.register('carts', views.CartViewSet)
 router.register('addresses', views.AddressViewSet, basename='address')
+router.register('images', views.ProductImageViewSet, basename='images')
 
 
 

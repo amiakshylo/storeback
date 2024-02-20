@@ -29,11 +29,12 @@ class CollectionSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     
+    user = serializers.CharField(read_only=True)
     class Meta:
         model = Review
-        fields = ['id', 'user', 'date', 'description']
+        fields = ['id', 'product_id', 'user', 'date', 'description']
         
-    user = serializers.CharField(read_only=True)
+    
     
     def create(self, validated_data):
         product_id = self.context['product_id']

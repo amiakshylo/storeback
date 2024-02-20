@@ -1,5 +1,6 @@
 
 
+import os
 from django.db.models.aggregates import Count
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -22,23 +23,28 @@ from .serializers import AddressSerializer, CartItemSerializer, CartSerializer, 
 
 
 class ProductImageViewSet(ModelViewSet):
+
     serializer_class = ProductImageSerializer
     
     def get_queryset(self):
-        return ProductImage.objects.filter(product_id=self.kwargs['product_pk'])
+        product_pk = self.kwargs.get('product_pk')
+        if product_pk is not None:
+            return ProductImage.objects.filter(product_id=product_pk)
+        return ProductImage.objects.all()
 
     def get_serializer_context(self):
-        return {'product_id': self.kwargs['product_pk']}
+        product_pk = self.kwargs.get('product_pk')
+        return {'product_id': product_pk} if product_pk is not None else {}
     
-    # def destroy(self, request, *args, **kwargs):
-    #     image = get_object_or_404(ProductImage, image=self.kwargs['image'])
-    #     print(image)
-    #     try:
-    #         os.remove(image.image.path)  # Assuming 'image' is the field storing the image path
-    #     except FileNotFoundError:
-    #         pass  # If file doesn't exist, just continue
-    #     image.delete()
-    #     return Response(status=status.HTTP_204_NO_CONTENT)
+    def destroy(self, request, *args, **kwargs):
+        image_id = self.kwargs.get('image')
+        image = get_object_or_404(ProductImage, image_id)
+        try:
+            os.remove(image.image.path)  # Assuming 'image' is the field storing the image path
+        except FileNotFoundError:
+            pass  # If file doesn't exist, just continue
+        image.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
@@ -107,19 +113,20 @@ class CollectionViewSet(ModelViewSet):
 
 
 class AddressViewSet(ModelViewSet):
-    queryset = Address.objects.all()
     serializer_class = AddressSerializer
     permission_classes = [IsAuthenticated]
-    
+        
     def get_queryset(self):
-        user = self.request.user.id
-        print(user)
-        if user == 'admin':  # type: ignore
-            return Address.objects.select_related('customer').all()
-        return Address.objects.filter(customer_id=user)
+        user = self.request.user
+        if user.is_staff: #type: ignore
+            return Address.objects.all()
+        else:
+            customer_id = Customer.objects.only('id').get(user_id=user.id) #type: ignore
+            return Address.objects.filter(customer_id=customer_id)
     
-    def get_serializer_context(self):
-        return {'customer_id': self.kwargs.get('customer_pk')}
+    def get_serializer_context(self, *args, **kwargs):
+        customer_pk = self.kwargs.get('customer_pk')
+        return {'customer_id': customer_pk}
         
         
         
@@ -147,19 +154,23 @@ class CustomerViewSet(ModelViewSet):
 class ReviewViewSet(ModelViewSet):
     
     serializer_class = ReviewSerializer
-
+    permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = ReviewFilter
     
+    
+        
+    
+
+        
 
     def get_queryset(self):
         product_pk = self.kwargs.get('product_pk')
-        user = self.request.user.username  # type: ignore
         if product_pk is not None:
             return Review.objects.filter(product_id=product_pk)
         else:
             # Handle the case when 'product_pk' is not present in kwargs
-            return Review.objects.filter(user=user)
+            return Review.objects.all()
 
     
     def get_serializer_context(self, *args, **kwargs):
