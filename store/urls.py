@@ -56,10 +56,6 @@ urlpatterns = [
     path('', include(collections_router.urls)),
     path('', include(cart_router.urls)),
     path('', include(image_router.urls)),
-    path('', include(address_router.urls))
+    path('', include(address_router.urls)),
     
-
-
-
-
 ]
