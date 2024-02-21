@@ -1,6 +1,10 @@
+import random
 from rest_framework import status
 import pytest
+from store.models import Collection, Product
 from store.tests.conftest import authenticate_user
+from model_bakery import baker
+
 
 @pytest.fixture()
 def create_collection(api_client):
@@ -9,11 +13,10 @@ def create_collection(api_client):
     return do_create_collection
 
 @pytest.fixture()
-def retrive_collection(api_client):
-    def do_retrive_collection(id):
-        return api_client.get(f'/store/collections/{id}/')
-    return do_retrive_collection
-
+def create_product(api_client):
+    def do_create_product(data):
+        return api_client.post('/store/product/', data)
+    return do_create_product
 
 
 @pytest.mark.django_db
@@ -46,21 +49,88 @@ class TestCreateCollection:
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data['title'] is not None 
         
-# @pytest.mark.django_db        
-# class TestRetriveCollection:
-#     def test_retrive_collection_list(self, retrive_collection):
-#         response =  retrive_collection(2)
+@pytest.mark.django_db        
+class TestRetriveCollection:
+    def test_retrive_collection_list(self, api_client):
+        response = api_client.get('/store/collections/')
         
-#         assert response.status_code == status.HTTP_200_OK
+        assert response.status_code == status.HTTP_200_OK
     
-    def test_if_collection_exist_return_200(self, create_collection, retrive_collection, authenticate_user):
-        authenticate_user(is_staff=True)
-        response = create_collection({'title': 'a'})
-        collection_id = response.data['id']
-        response_id = retrive_collection(collection_id)
-        response_id.data['id']
+    
+    def test_if_collection_exist_return_200(self, api_client):
+        collection = baker.make(Collection)
         
-        assert response_id.data['id'] == collection_id
+        response = api_client.get(f'/store/collections/{collection.id}/')
+        
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data == {
+            'id': collection.id,
+            'title': collection.title,
+            'products_count': 0
+        }
+        
+    def test_if_collection_not_exist_return_404(self, api_client):
+        collection = random.randint(0, 1000)
+        response = api_client.get(f'/store/collections/{collection}/')
+        
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+@pytest.mark.django_db        
+class TestCreateProduct:
+    def test_if_user_is_anonimus_return_401(self, api_client):
+        baker.make(Product)
+        
+        response = api_client.post('/store/products/')
+        
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        
+    def test_if_user_is_not_admin_return_403(self, api_client, authenticate_user):
+        authenticate_user()
+        baker.make(Product)
+        
+        response = api_client.post('/store/products/')
+        
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+        
+    def test_valid_data_return_201(self, create_collection, authenticate_user):
+        authenticate_user(is_staff=True)
+        collection = baker.make(Collection)
+        data = {
+    "title": "test",
+    "slug": "test",
+    "inventory": 10,
+    "price": 22,
+    "collection": collection.id
+}
+                
+        response = create_collection(data)
+
+        assert response.status_code == status.HTTP_201_CREATED
+        
+    def test_invalid_data_return_400(self, create_collection, authenticate_user):
+        authenticate_user(is_staff=True)
+        collection = baker.make(Collection)
+        data = {
+    "title": "",
+    "slug": "test",
+    "inventory": 10,
+    "price": 22,
+    "collection": collection.id
+}
+                
+        response = create_collection(data)
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        
+        
+        
+    
+        
+        
+
+        
+        
+        
                 
         
         
