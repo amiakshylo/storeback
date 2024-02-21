@@ -27,6 +27,7 @@ pytest-django = "*"
 autopep8 = "*"
 pytest-watch = "*"
 model-bakery = "==1.16.0"
+locust = "*"
 
 [requires]
 python_version = "*"
