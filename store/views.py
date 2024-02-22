@@ -4,7 +4,8 @@ import os
 from django.db.models.aggregates import Count
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework.decorators import action
 from rest_framework import status
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, UpdateModelMixin, ListModelMixin
@@ -20,6 +21,8 @@ from .permissions import CancelOrderPermission, FullDjangoModelPermissions, IsAd
 from .models import Address, Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review, ProductImage
 from .serializers import AddressSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CreateOrderSerializer,  CustomerSerializer, \
     OrderSerializer, ProductImageSerializer, ProductSerializer, ReviewSerializer, AddCartItemSerializer, UpdateCartItemSerializer, UpdateOrderSerializer
+
+
 
 
 class ProductImageViewSet(ModelViewSet):
