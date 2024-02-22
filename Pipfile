@@ -21,6 +21,7 @@ flower = "*"
 pytest = "*"
 model-bakery = "==1.16.0"
 django-silk = "*"
+django-redis = "*"
 
 [dev-packages]
 pytest = "*"
