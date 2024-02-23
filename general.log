@@ -147,3 +147,17 @@ Traceback (most recent call last):
   File "/home/ocean/.local/share/virtualenvs/storefront-f0Czj6NA/lib/python3.10/site-packages/MySQLdb/connections.py", line 261, in query
     _mysql.connection.query(self, query)
 django.db.utils.IntegrityError: (1364, "Field 'id' doesn't have a default value")
+2024-02-23 14:43:42,263 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 14:43:46,025 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 14:44:05,846 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 14:44:08,362 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 14:44:11,321 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 14:45:32,359 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 14:45:50,849 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 14:47:03,312 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 14:48:33,584 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 14:48:40,001 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 14:48:55,195 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 14:48:55,292 (WARNING) - django.request - Unauthorized: /store/carts/
+2024-02-23 14:48:58,755 (WARNING) - django.request - Unauthorized: /store/carts/
+2024-02-23 14:49:04,133 (WARNING) - django.request - Method Not Allowed: /store/carts/
