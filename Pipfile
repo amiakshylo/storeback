@@ -22,8 +22,10 @@ pytest = "*"
 model-bakery = "==1.16.0"
 django-silk = "*"
 django-redis = "*"
-whitenoise = "*"
 gunicorn = "*"
+psycopg2-binary = "*"
+dj-database-url = "*"
+whitenoise = {extras = ["brotli"], version = "*"}
 
 [dev-packages]
 pytest = "*"

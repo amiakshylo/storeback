@@ -43,3 +43,5 @@
 2024-02-23 11:07:05,117 (WARNING) - django.request - Forbidden: /store/products/
 2024-02-23 11:07:05,177 (WARNING) - django.request - Bad Request: /store/collections/
 2024-02-23 11:12:03,258 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 11:57:14,048 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 13:09:42,023 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
