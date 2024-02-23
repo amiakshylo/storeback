@@ -1,15 +1,17 @@
-import django
+import logging
 from django.shortcuts import render
 import requests
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from rest_framework.views import APIView
 
+logger = logging.getLogger(__name__)
 
 class HelloView(APIView):
-
-    @method_decorator(cache_page(10 * 60))
     def get(self, request):
-        response = requests.get('https://httpbin.org/delay/2')
+        try:
+            logger.info('Calling httpbin')
+            response = requests.get('https://httpbin.org/delay/2')
+            logger.info('Received the response')
+        except requests.ConnectionError:
+            logger.critical('hhtbin is ofline')      
         data = response.json()
-        return render(request, 'hello.html', {'name': data})
+        return render(request, 'hello.html', {'name': 'Andrew'})

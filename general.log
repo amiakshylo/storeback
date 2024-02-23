@@ -1,0 +1,10 @@
+2024-02-23 10:36:14,368 (INFO) - playground.views - Calling httpbin
+2024-02-23 10:36:17,071 (INFO) - playground.views - Received the response
+2024-02-23 10:36:40,071 (INFO) - django.utils.autoreload - /home/ocean/storefront/playground/views.py changed, reloading.
+2024-02-23 10:36:40,589 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-23 10:36:40,734 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 10:36:43,180 (INFO) - playground.views - Calling httpbin
+2024-02-23 10:36:53,861 (INFO) - playground.views - Received the response
+2024-02-23 10:37:04,505 (INFO) - django.utils.autoreload - /home/ocean/storefront/playground/views.py changed, reloading.
+2024-02-23 10:37:04,980 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-23 10:37:05,121 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
