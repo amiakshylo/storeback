@@ -3,3 +3,4 @@ __pycache__/
 general.log
 /static/
 /media/
+/migrations/
