@@ -163,3 +163,10 @@ django.db.utils.IntegrityError: (1364, "Field 'id' doesn't have a default value"
 2024-02-23 14:49:04,133 (WARNING) - django.request - Method Not Allowed: /store/carts/
 2024-02-23 15:03:34,698 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
 2024-02-23 15:03:55,841 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 15:06:01,997 (WARNING) - django.request - Unauthorized: /store/carts/
+2024-02-23 15:06:21,734 (WARNING) - django.request - Method Not Allowed: /store/carts/
+2024-02-23 15:08:10,228 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 15:08:46,199 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 15:09:59,032 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 15:11:16,558 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 15:11:24,260 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
