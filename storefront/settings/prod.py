@@ -10,7 +10,7 @@ ALLOWED_HOSTS = ['storefront-epcj.onrender.com']
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://storefront_t6c8_user:yBxTinAcfwv7WoyKQbNakyQyBtv4USBI@dpg-cncfemen7f5s73bgb8dg-a/storefront_t6c8',
+        default='postgres://mysite:YAQatcmxundCJm9clHOqE7UqoyqUHwN4@dpg-cncfupeg1b2c739hm6l0-a/mysite_8gpf',
         conn_max_age=600
     )
 }
