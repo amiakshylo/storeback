@@ -2,7 +2,7 @@
 # Exit on error
 set -o errexit
 
-
+pipenv shell  
 
 # Convert static asset files
 python manage.py collectstatic --no-input
