@@ -172,3 +172,5 @@ django.db.utils.IntegrityError: (1364, "Field 'id' doesn't have a default value"
 2024-02-23 15:11:24,260 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
 2024-02-23 15:48:55,354 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
 2024-02-23 15:48:55,656 (WARNING) - django.request - Not Found: /favicon.ico
+2024-02-23 15:56:50,664 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 15:57:01,097 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
