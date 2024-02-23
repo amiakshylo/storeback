@@ -45,3 +45,7 @@
 2024-02-23 11:12:03,258 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
 2024-02-23 11:57:14,048 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
 2024-02-23 13:09:42,023 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 14:03:10,987 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-23 14:05:31,069 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 14:15:34,288 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-23 14:15:43,752 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
