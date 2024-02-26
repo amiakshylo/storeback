@@ -4,30 +4,25 @@ import os
 from django.db.models.aggregates import Count
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from rest_framework.decorators import action
 from rest_framework import status
-from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, UpdateModelMixin, ListModelMixin
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
-from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly, IsAdminUser, DjangoModelPermissions
-
-from core import serializers
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from .pagination import DefaultPagination
 from .filters import ProductFilter, ReviewFilter
-from .permissions import CancelOrderPermission, FullDjangoModelPermissions, IsAdminOrReadOnly
+from .permissions import FullDjangoModelPermissions, IsAdminOrReadOnly
 from .models import Address, Cart, CartItem, Customer, Order, OrderItem, Product, Collection, Review, ProductImage
 from .serializers import AddressSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CreateOrderSerializer,  CustomerSerializer, \
     OrderSerializer, ProductImageSerializer, ProductSerializer, ReviewSerializer, AddCartItemSerializer, UpdateCartItemSerializer, UpdateOrderSerializer
 
 
-
-
 class ProductImageViewSet(ModelViewSet):
 
     serializer_class = ProductImageSerializer
+    permission_classes = [IsAdminOrReadOnly]
     
     def get_queryset(self):
         product_pk = self.kwargs.get('product_pk')
@@ -43,12 +38,11 @@ class ProductImageViewSet(ModelViewSet):
         image_id = self.kwargs.get('image')
         image = get_object_or_404(ProductImage, image_id)
         try:
-            os.remove(image.image.path)  # Assuming 'image' is the field storing the image path
+            os.remove(image.image.path)
         except FileNotFoundError:
-            pass  # If file doesn't exist, just continue
+            pass
         image.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
 
 
 class CartViewSet(CreateModelMixin,
@@ -77,7 +71,7 @@ class CartItemViewSet(ModelViewSet):
         return {'cart_id': self.kwargs['cart_pk']}
 
 
-class ProductVievSet(ModelViewSet):  # or ReadOnlyModelViewSet, only for GETing
+class ProductVievSet(ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = ProductFilter
@@ -131,9 +125,6 @@ class AddressViewSet(ModelViewSet):
         customer_pk = self.kwargs.get('customer_pk')
         return {'customer_id': customer_pk}
         
-        
-        
-
 
 class CustomerViewSet(ModelViewSet):
     serializer_class = CustomerSerializer

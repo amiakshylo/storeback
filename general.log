@@ -229,3 +229,462 @@ django.db.utils.IntegrityError: (1364, "Field 'id' doesn't have a default value"
 2024-02-26 12:34:01,465 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
 2024-02-26 12:45:36,636 (WARNING) - django.request - Not Found: /index.html
 2024-02-26 12:51:50,237 (WARNING) - django.request - Unauthorized: /store/orders/
+2024-02-26 15:23:38,970 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:27:50,726 (WARNING) - django.request - Not Found: /favicon.ico
+2024-02-26 15:29:20,428 (WARNING) - django.request - Unauthorized: /store/customers/
+2024-02-26 15:29:45,665 (WARNING) - django.request - Unauthorized: /store/orders/
+2024-02-26 15:29:48,718 (WARNING) - django.request - Unauthorized: /store/carts/
+2024-02-26 15:29:51,544 (WARNING) - django.request - Unauthorized: /store/addresses/
+2024-02-26 15:30:58,903 (WARNING) - django.request - Bad Request: /store/images/
+2024-02-26 15:31:06,164 (ERROR) - django.request - Internal Server Error: /store/images/
+Traceback (most recent call last):
+  File "/home/ocean/.local/share/virtualenvs/storefront-f0Czj6NA/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/ocean/.local/share/virtualenvs/storefront-f0Czj6NA/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ocean/.local/share/virtualenvs/storefront-f0Czj6NA/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/home/ocean/.local/share/virtualenvs/storefront-f0Czj6NA/lib/python3.10/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/ocean/.local/share/virtualenvs/storefront-f0Czj6NA/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/ocean/.local/share/virtualenvs/storefront-f0Czj6NA/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/ocean/.local/share/virtualenvs/storefront-f0Czj6NA/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/ocean/.local/share/virtualenvs/storefront-f0Czj6NA/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/ocean/.local/share/virtualenvs/storefront-f0Czj6NA/lib/python3.10/site-packages/rest_framework/mixins.py", line 19, in create
+    self.perform_create(serializer)
+  File "/home/ocean/.local/share/virtualenvs/storefront-f0Czj6NA/lib/python3.10/site-packages/rest_framework/mixins.py", line 24, in perform_create
+    serializer.save()
+  File "/home/ocean/.local/share/virtualenvs/storefront-f0Czj6NA/lib/python3.10/site-packages/rest_framework/serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "/home/ocean/storefront/store/serializers.py", line 16, in create
+    product_id = self.context['product_id']
+KeyError: 'product_id'
+2024-02-26 15:32:45,269 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 15:32:45,879 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:32:49,442 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 15:32:49,916 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:32:52,172 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 15:32:52,658 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:33:01,229 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 15:33:01,688 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:33:04,166 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 15:33:04,810 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:33:06,045 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 15:33:06,516 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:33:09,778 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 15:33:10,267 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:33:11,768 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 15:33:12,225 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:33:19,759 (WARNING) - django.request - Unauthorized: /store/images/
+2024-02-26 15:33:22,733 (WARNING) - django.request - Unauthorized: /store/images/
+2024-02-26 15:35:01,918 (WARNING) - django.request - Unauthorized: /store/addresses/
+2024-02-26 15:35:16,899 (WARNING) - django.request - Method Not Allowed: /auth/jwt/create/
+2024-02-26 15:35:17,076 (WARNING) - django.request - Method Not Allowed: /auth/jwt/create/
+2024-02-26 15:35:41,142 (WARNING) - django.request - Unauthorized: /auth/jwt/create/
+2024-02-26 15:36:38,012 (WARNING) - django.request - Unauthorized: /auth/users/
+2024-02-26 15:39:47,787 (INFO) - django.utils.autoreload - /home/ocean/storefront/storefront/settings/dev.py changed, reloading.
+2024-02-26 15:39:48,379 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:39:48,545 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:46:26,426 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 15:46:26,971 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:46:27,116 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:47:56,797 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 15:47:57,434 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:47:57,595 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:48:06,099 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 15:48:06,715 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:48:06,859 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:48:12,241 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 15:48:12,764 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:48:12,904 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:51:33,248 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 15:51:33,790 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:51:33,947 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:53:09,669 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/signals/__init__.py changed, reloading.
+2024-02-26 15:53:10,172 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:53:10,313 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:53:11,664 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/signals/__init__.py changed, reloading.
+2024-02-26 15:53:12,164 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:53:12,330 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:53:14,666 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/signals/__init__.py changed, reloading.
+2024-02-26 15:53:15,139 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:53:15,300 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:55:17,251 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:55:17,739 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:55:17,881 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:55:19,271 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:55:19,773 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:55:19,931 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:55:23,310 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:55:23,851 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:55:23,989 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:55:25,272 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:55:25,796 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:55:25,932 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:55:28,232 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:55:28,755 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:55:28,916 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:55:30,230 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:55:30,722 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:55:30,857 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:55:33,146 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:55:33,638 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:55:33,778 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:55:37,074 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:55:37,612 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:55:37,748 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:55:39,017 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:55:39,492 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:55:39,636 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:55:44,974 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:55:45,567 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:55:45,727 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:55:49,023 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:55:49,478 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:55:49,615 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:56:14,203 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:56:14,714 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:56:14,854 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:56:24,229 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:56:24,686 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:56:24,831 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:56:45,386 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:56:45,993 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:56:46,153 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:56:48,478 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:56:48,998 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:56:49,136 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:56:51,432 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:56:51,954 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:56:52,096 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:56:54,381 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:56:54,848 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:56:54,983 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:56:57,271 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:56:57,766 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:56:57,904 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:00,184 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:00,680 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:00,811 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:03,124 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:03,625 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:03,770 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:06,080 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:06,577 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:06,721 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:09,005 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:09,495 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:09,636 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:11,967 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:12,436 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:12,571 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:14,880 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:15,383 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:15,516 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:17,814 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:18,282 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:18,413 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:20,715 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:21,190 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:21,321 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:23,607 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:24,079 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:24,221 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:32,630 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:33,146 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:37,393 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:37,842 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:37,970 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:44,351 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:44,846 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:44,985 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:48,317 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:48,810 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:48,953 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:51,299 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:51,831 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:51,964 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:53,325 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:53,885 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:54,018 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:55,332 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:55,797 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:55,935 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:57:58,265 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:57:58,762 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:57:58,889 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:58:00,205 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:58:00,691 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:58:00,831 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:58:04,166 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:58:04,688 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:58:04,828 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:58:09,175 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:58:09,659 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:58:09,803 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:58:12,154 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:58:12,677 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:58:12,816 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:58:16,170 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:58:16,665 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:58:16,814 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:58:18,174 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:58:18,664 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:58:18,802 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:58:20,212 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:58:20,718 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:58:20,867 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:58:27,242 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:58:27,712 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:58:27,847 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:58:45,409 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:58:45,935 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:58:46,073 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:59:12,748 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:59:13,214 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:59:13,357 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:59:27,832 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:59:28,294 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:59:28,432 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:59:50,031 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:59:50,830 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:59:50,972 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 15:59:55,324 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 15:59:55,826 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 15:59:55,965 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:00:01,336 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 16:00:01,852 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:00:02,007 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:00:46,976 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/filters.py changed, reloading.
+2024-02-26 16:00:47,487 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:00:47,639 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:00:48,947 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/filters.py changed, reloading.
+2024-02-26 16:00:49,474 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:00:49,620 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:00:50,942 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/filters.py changed, reloading.
+2024-02-26 16:00:51,428 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:00:51,567 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:01:18,242 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/models.py changed, reloading.
+2024-02-26 16:01:18,723 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:01:18,862 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:01:33,353 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/models.py changed, reloading.
+2024-02-26 16:01:33,836 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:01:33,985 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:01:40,384 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/models.py changed, reloading.
+2024-02-26 16:01:40,871 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:01:41,003 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:02:01,616 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/models.py changed, reloading.
+2024-02-26 16:02:02,167 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:02:02,316 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:02:03,700 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/models.py changed, reloading.
+2024-02-26 16:02:04,191 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:02:04,324 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:02:06,670 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/models.py changed, reloading.
+2024-02-26 16:02:07,193 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:02:07,328 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:02:21,870 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 16:02:22,362 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:02:22,503 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:02:35,991 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 16:02:36,489 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:02:36,645 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:02:38,997 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 16:02:39,476 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:02:39,607 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:02:41,925 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 16:02:42,467 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:02:42,617 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:02:45,997 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 16:02:46,499 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:02:46,642 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:02:47,970 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 16:02:48,461 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:02:48,610 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:02:55,005 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/admin.py changed, reloading.
+2024-02-26 16:02:55,497 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:02:55,633 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:05:13,811 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/permissions.py changed, reloading.
+2024-02-26 16:05:14,254 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:05:14,393 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:05:16,743 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/permissions.py changed, reloading.
+2024-02-26 16:05:17,199 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:05:17,342 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:05:36,965 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/permissions.py changed, reloading.
+2024-02-26 16:05:37,432 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:05:37,576 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:05:41,937 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/permissions.py changed, reloading.
+2024-02-26 16:05:42,406 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:05:42,559 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:05:45,903 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/permissions.py changed, reloading.
+2024-02-26 16:05:46,370 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:05:46,515 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:06:21,300 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:06:21,823 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:06:21,955 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:06:23,329 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:06:23,821 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:06:23,972 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:06:28,366 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:06:28,855 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:06:28,995 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:06:31,324 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:06:31,802 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:06:31,936 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:06:50,489 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:06:51,018 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:06:51,163 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:06:57,558 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:06:58,046 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:06:58,228 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:07:03,625 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:07:04,110 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:07:04,242 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:07:10,641 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:07:11,121 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:07:11,257 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:07:12,564 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:07:13,108 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:07:13,262 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:07:14,610 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:07:15,080 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:07:15,214 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:07:57,056 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:07:57,551 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:07:57,692 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:08:10,196 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:08:10,695 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:08:10,845 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:08:27,366 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:08:27,846 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:08:27,987 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:08:29,314 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:08:29,842 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:08:30,015 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:08:31,348 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:08:31,831 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:08:31,983 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:08:48,502 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:08:48,984 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:08:49,131 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:09:21,891 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:09:22,348 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:09:22,484 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:09:23,806 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:09:24,356 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:09:24,484 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:10:21,522 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:10:22,004 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:10:22,144 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:10:23,525 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:10:24,019 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:10:24,149 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:10:41,683 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:10:42,183 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:10:42,317 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:12:10,822 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:12:11,333 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:12:11,466 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:12:21,903 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:12:22,443 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:12:22,594 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:12:24,960 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:12:25,431 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:12:25,571 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:13:10,477 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:13:10,963 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:13:11,095 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:13:52,951 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:13:53,528 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:13:53,667 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:13:54,994 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:13:55,471 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:13:55,609 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:14:05,025 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:14:05,532 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:14:05,681 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:14:07,002 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:14:07,488 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:14:07,623 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:15:23,021 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:15:23,513 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:15:23,653 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:15:45,274 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:15:45,749 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:15:45,891 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:16:23,695 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:16:24,176 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:16:24,326 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:16:30,715 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:16:31,205 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:16:31,335 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:24:27,142 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:24:27,674 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:24:27,805 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:24:31,144 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:24:31,625 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:24:31,767 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:25:15,640 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/serializers.py changed, reloading.
+2024-02-26 16:25:16,171 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:25:16,316 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:25:39,933 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/urls.py changed, reloading.
+2024-02-26 16:25:40,416 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:25:40,566 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:25:51,009 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/urls.py changed, reloading.
+2024-02-26 16:25:51,529 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:25:51,681 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:26:28,520 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:26:29,016 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:26:29,150 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:26:42,644 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:26:43,100 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:26:43,240 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:26:50,622 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:26:51,100 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:26:51,242 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:26:55,602 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:26:56,115 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:26:56,251 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:27:01,613 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:27:02,179 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:27:02,326 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:27:08,725 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:27:09,254 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:27:09,391 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:27:42,146 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:27:42,622 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:27:42,770 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:27:46,199 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:27:46,714 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:27:48,947 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:27:49,512 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:27:51,737 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:27:52,204 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:27:52,343 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:28:00,775 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:28:01,267 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:28:01,401 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:28:13,869 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:28:14,354 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:28:14,493 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:28:18,852 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:28:19,328 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:28:19,473 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:28:22,817 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:28:23,295 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:28:23,437 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:28:30,855 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:28:31,337 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:28:31,476 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:28:40,943 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:28:41,416 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:28:41,560 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:28:44,907 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:28:45,402 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:28:45,536 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 16:28:46,966 (INFO) - django.utils.autoreload - /home/ocean/storefront/store/views.py changed, reloading.
+2024-02-26 16:28:47,444 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 16:28:47,587 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.

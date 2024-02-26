@@ -14,7 +14,6 @@ router.register('addresses', views.AddressViewSet, basename='address')
 router.register('images', views.ProductImageViewSet, basename='images')
 
 
-
 products_router = routers.NestedDefaultRouter(
     router, 'products', lookup='product')
 products_router.register('reviews', views.ReviewViewSet,
@@ -42,11 +41,6 @@ image_router.register('images', views.ProductImageViewSet, basename='product_ima
 
 address_router = routers.NestedDefaultRouter(router, 'customers', lookup='customer')
 address_router.register('addresses', views.AddressViewSet, basename='customer_address')
-
-
-
-
-# URLConf
 
 
 urlpatterns = [

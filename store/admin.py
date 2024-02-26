@@ -7,54 +7,41 @@ from . import models
 from .models import ProductImage
 
 
-"""Editing Children Using Inlines"""
-
-
-
-class OrderItemInline(admin.TabularInline):  # or admin.StackedInline
+class OrderItemInline(admin.TabularInline):
     model = models.OrderItem
     min_num = 1
     max_num = 5
     autocomplete_fields = ['product']
-    """how many rows do we need preloaded"""
     extra = 0
+    
 
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
     autocomplete_fields = ['customer']
-    """Editing Children Using Inlines"""
     inlines = [OrderItemInline]
-    """what we gonna see in thiss class"""
     list_display = ['id', 'placed_at', 'customer', 'payment_status']
-    """what we gonna edit"""
     list_editable = ['payment_status']
     list_filter = ['customer']
-
-
-"""Custom filter"""
-
+    
 
 class InventoryFilter(admin.SimpleListFilter):
     title = 'inventory'
     parameter_name = 'inventory'
     filter_1 = '<10'
     filter_2 = '>99'
-    
-    """should takes 2 method"""
 
     def lookups(self, request, model_admin):
         return [
             (self.filter_1, 'Low'),
             (self.filter_2, 'High')
-        ]
-        
+        ]        
 
     def queryset(self, request, queryset):
         if self.value() == self.filter_1:
             return queryset.filter(inventory__lt=10)
         if self.value() == self.filter_2:
             return queryset.filter(inventory__gt=99)
-
+        
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
@@ -63,8 +50,8 @@ class ProductImageInline(admin.TabularInline):
     def thumbnail(self, instance):
         if instance.image.name != '':
             return format_html(f'<img src="{instance.image.url}" class="thumbnail" />')
-        return ''
-        
+        return ''       
+    
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -101,7 +88,7 @@ class ProductAdmin(admin.ModelAdmin):
         self.message_user(
             request,
             f'{updated_count} products were successfully updated',
-            messages.ERROR  # from django.contrib import admin, messages
+            messages.ERROR
         )
         
     class Media:
@@ -114,7 +101,6 @@ class CountProductFilter(admin.SimpleListFilter):
     title = 'products'
     parameter_name = 'products'
     filter_1 = '>1'
-    """should takes 2 method"""
 
     def lookups(self, request, model_admin):
         return [
@@ -133,8 +119,7 @@ class CollectionAdmin(admin.ModelAdmin):
     list_filter = [CountProductFilter]
     autocomplete_fields = ['featured_product']
     search_fields = ['title']
-    """computed field"""
-    """adding sorting"""
+
     @admin.display(ordering='product_count')
     def products_count(self, collection):
         url = (
@@ -149,7 +134,6 @@ class CollectionAdmin(admin.ModelAdmin):
         return super().get_queryset(request).annotate(
             product_count=Count('products')
         )
-
 
 
 @admin.register(models.Customer)

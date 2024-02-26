@@ -1,6 +1,4 @@
-from dataclasses import fields
 from django_filters.rest_framework import FilterSet
-
 from store.models import Product, Review
 
 class ProductFilter(FilterSet):
