@@ -174,3 +174,57 @@ django.db.utils.IntegrityError: (1364, "Field 'id' doesn't have a default value"
 2024-02-23 15:48:55,656 (WARNING) - django.request - Not Found: /favicon.ico
 2024-02-23 15:56:50,664 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
 2024-02-23 15:57:01,097 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 11:31:18,773 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 11:31:19,011 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 11:32:12,063 (INFO) - django.utils.autoreload - /home/ocean/storefront/storefront/settings/common.py changed, reloading.
+2024-02-26 11:32:12,548 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 11:32:12,694 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 11:32:23,148 (INFO) - django.utils.autoreload - /home/ocean/storefront/storefront/settings/dev.py changed, reloading.
+2024-02-26 11:32:23,648 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 11:32:23,806 (WARNING) - silk.profiling.profiler - Cannot execute silk_profile as silk is not installed correctly.
+2024-02-26 11:32:27,154 (INFO) - django.utils.autoreload - /home/ocean/storefront/storefront/settings/dev.py changed, reloading.
+2024-02-26 11:32:27,701 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 11:32:35,436 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 11:33:44,793 (WARNING) - django.request - Not Found: /favicon.ico
+2024-02-26 12:10:29,015 (WARNING) - django.request - Not Found: /css/all.min.css
+2024-02-26 12:10:29,043 (WARNING) - django.request - Not Found: /css/bootstrap.min.css
+2024-02-26 12:10:29,048 (WARNING) - django.request - Not Found: /css/templatemo-style.css
+2024-02-26 12:10:29,061 (WARNING) - django.request - Not Found: /js/parallax.min.js
+2024-02-26 12:10:29,073 (WARNING) - django.request - Not Found: /js/jquery.min.js
+2024-02-26 12:15:19,440 (WARNING) - django.request - Not Found: /js/parallax.min.js
+2024-02-26 12:15:19,450 (WARNING) - django.request - Not Found: /js/jquery.min.js
+2024-02-26 12:15:21,265 (WARNING) - django.request - Not Found: /js/jquery.min.js
+2024-02-26 12:15:21,271 (WARNING) - django.request - Not Found: /js/parallax.min.js
+2024-02-26 12:18:01,189 (WARNING) - django.request - Not Found: /js/parallax.min.js
+2024-02-26 12:18:01,229 (WARNING) - django.request - Not Found: /js/jquery.min.js
+2024-02-26 12:18:05,135 (WARNING) - django.request - Not Found: /js/jquery.min.js
+2024-02-26 12:18:05,169 (WARNING) - django.request - Not Found: /js/parallax.min.js
+2024-02-26 12:19:06,185 (WARNING) - django.request - Not Found: /core/js/jquery.min.js
+2024-02-26 12:19:06,194 (WARNING) - django.request - Not Found: /core/js/parallax.min.js
+2024-02-26 12:19:07,320 (WARNING) - django.request - Not Found: /core/js/parallax.min.js
+2024-02-26 12:19:07,327 (WARNING) - django.request - Not Found: /core/js/jquery.min.js
+2024-02-26 12:20:15,544 (WARNING) - django.request - Not Found: /core/js/parallax.min.js
+2024-02-26 12:20:15,549 (WARNING) - django.request - Not Found: /{ % static 'core/js/jquery.min.js' %}
+2024-02-26 12:20:16,634 (WARNING) - django.request - Not Found: /core/js/parallax.min.js
+2024-02-26 12:20:16,643 (WARNING) - django.request - Not Found: /{ % static 'core/js/jquery.min.js' %}
+2024-02-26 12:20:46,728 (WARNING) - django.request - Not Found: /core/js/parallax.min.js
+2024-02-26 12:20:46,735 (WARNING) - django.request - Not Found: /{ % static 'core/js/jquery.min.js' %}
+2024-02-26 12:20:50,852 (WARNING) - django.request - Not Found: /{ % static 'core/js/jquery.min.js' %}
+2024-02-26 12:20:50,880 (WARNING) - django.request - Not Found: /core/js/parallax.min.js
+2024-02-26 12:20:51,614 (WARNING) - django.request - Not Found: /core/js/parallax.min.js
+2024-02-26 12:20:51,620 (WARNING) - django.request - Not Found: /{ % static 'core/js/jquery.min.js' %}
+2024-02-26 12:20:52,161 (WARNING) - django.request - Not Found: /{ % static 'core/js/jquery.min.js' %}
+2024-02-26 12:20:52,195 (WARNING) - django.request - Not Found: /core/js/parallax.min.js
+2024-02-26 12:21:24,422 (WARNING) - django.request - Not Found: /{ % static 'core/js/jquery.min.js' % }
+2024-02-26 12:21:24,429 (WARNING) - django.request - Not Found: /{ % static 'core/js/parallax.min.js' % }
+2024-02-26 12:21:25,424 (WARNING) - django.request - Not Found: /{ % static 'core/js/jquery.min.js' % }
+2024-02-26 12:21:25,432 (WARNING) - django.request - Not Found: /{ % static 'core/js/parallax.min.js' % }
+2024-02-26 12:21:30,612 (WARNING) - django.request - Not Found: /{ % static 'core/js/parallax.min.js' % }
+2024-02-26 12:21:30,621 (WARNING) - django.request - Not Found: /{ % static 'core/js/jquery.min.js' % }
+2024-02-26 12:25:03,326 (WARNING) - django.request - Not Found: /{ % static 'core/js/parallax.min.js' % }
+2024-02-26 12:25:03,335 (WARNING) - django.request - Not Found: /{ % static 'core/js/jquery.min.js' % }
+2024-02-26 12:25:04,265 (WARNING) - django.request - Not Found: /{ % static 'core/js/parallax.min.js' % }
+2024-02-26 12:25:04,274 (WARNING) - django.request - Not Found: /{ % static 'core/js/jquery.min.js' % }
+2024-02-26 12:30:24,465 (WARNING) - django.request - Not Found: /favicon.ico
+2024-02-26 12:34:01,465 (INFO) - django.utils.autoreload - Watching for file changes with StatReloader
+2024-02-26 12:45:36,636 (WARNING) - django.request - Not Found: /index.html

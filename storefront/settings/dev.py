@@ -15,3 +15,7 @@ DATABASES = {
         'PASSWORD': 'P@ssword'
     }
 }
+
+
+if DEBUG:
+    MIDDLEWARE += ['silk.middleware.SilkyMiddleware']
