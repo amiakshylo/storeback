@@ -23,11 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'localhost'
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORDS = ''
-EMAIL_PORT = 2525
+
 DEFAULT_FROM_EMAIL = 'from@andrii.com'
 
 ADMINS = [
@@ -185,8 +181,8 @@ DJOSER = {
 }
 
 
-CELERY_BROKER_URL = 'redis://localhost:6379/1'
-CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTU  = True
 CELERY_BEAT_SCHEDULE = {
     'notify_customers' : {
         'task': 'playground.tasks.notify_customers',
@@ -196,15 +192,7 @@ CELERY_BEAT_SCHEDULE = {
     }
 }
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/2", # need to use diferent DB from celery (number at the end)
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
+
 
 LOGGING = {
     'version': 1,

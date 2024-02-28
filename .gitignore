@@ -1,6 +1,6 @@
 __pycache__/
 *.pyc
-general.log
+/storefront/general.log
 /static/
 /media/
 /migrations/
