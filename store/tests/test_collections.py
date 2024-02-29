@@ -64,7 +64,7 @@ class TestRetriveCollection:
         
         assert response.status_code == status.HTTP_200_OK
         assert response.data == {
-            'id': collection.id,
+            'id': collection.id, 
             'title': collection.title,
             'products_count': 0
         }
