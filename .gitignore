@@ -1,6 +1,7 @@
 __pycache__/
 *.pyc
-/storefront/general.log
+general.log
 /static/
 /media/
 /migrations/
+celerybeat-schedule
