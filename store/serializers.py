@@ -27,19 +27,19 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 
 class CollectionSerializer(serializers.ModelSerializer):
+    products_count = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Collection
         fields = ["id", "title", "products_count"]
 
-    products_count = serializers.IntegerField(read_only=True)
-
 
 class ReviewSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(read_only=True)
+
     class Meta:
         model = Review
         fields = ["id", "product_id", "user", "date", "description"]
-
-    user = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
         product_id = self.context["product_id"]
@@ -48,6 +48,13 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    images = ProductImageSerializer(many=True, read_only=True)
+    price = serializers.DecimalField(
+        max_digits=6, decimal_places=2, source="unit_price"
+    )
+    price_with_tax = serializers.SerializerMethodField(method_name="calculate_tax")
+    reviews_count = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Product
         fields = [
@@ -61,13 +68,6 @@ class ProductSerializer(serializers.ModelSerializer):
             "reviews_count",
             "images",
         ]
-
-    images = ProductImageSerializer(many=True, read_only=True)
-    price = serializers.DecimalField(
-        max_digits=6, decimal_places=2, source="unit_price"
-    )
-    price_with_tax = serializers.SerializerMethodField(method_name="calculate_tax")
-    reviews_count = serializers.IntegerField(read_only=True)
 
     def calculate_tax(self, product: Product):
         return product.unit_price * Decimal(1.1)
@@ -86,12 +86,12 @@ class SimpleProductSerializer(serializers.ModelSerializer):
 
 
 class CartItemSerializer(serializers.ModelSerializer):
+    product = SimpleProductSerializer()
+    total_price = serializers.SerializerMethodField(method_name="get_total_price")
+
     class Meta:
         model = CartItem
         fields = ["id", "product", "quantity", "total_price"]
-
-    product = SimpleProductSerializer()
-    total_price = serializers.SerializerMethodField(method_name="get_total_price")
 
     def get_total_price(self, cart_item: CartItem):
         return cart_item.quantity * cart_item.product.unit_price
@@ -113,11 +113,9 @@ class CartSerializer(serializers.ModelSerializer):
 
 
 class AddressSerializer(serializers.ModelSerializer):
-    customer_id = serializers.IntegerField(read_only=True)
-
     class Meta:
         model = Address
-        fields = ["id", "street", "city", "customer_id"]
+        fields = ["id", "street", "city"]
 
     def create(self, validated_data):
         customer_id = self.context["customer_id"]
@@ -174,11 +172,11 @@ class CreateOrderSerializer(serializers.Serializer):
 
 
 class AddCartItemSerializer(serializers.ModelSerializer):
+    product_id = serializers.IntegerField()
+
     class Meta:
         model = CartItem
         fields = ["id", "product_id", "quantity"]
-
-    product_id = serializers.IntegerField()
 
     def save(self, **kwargs):
         cart_id = self.context["cart_id"]

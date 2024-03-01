@@ -2,8 +2,7 @@ from django.contrib import admin, messages
 from django.db.models.aggregates import Count
 from django.utils.html import format_html, urlencode
 from django.urls import reverse
-from . import models
-from store.models import ProductImage
+from store import models
 
 
 class OrderItemInline(admin.TabularInline):
@@ -40,7 +39,7 @@ class InventoryFilter(admin.SimpleListFilter):
 
 
 class ProductImageInline(admin.TabularInline):
-    model = ProductImage
+    model = models.ProductImage
     readonly_fields = ["thumbnail"]
 
     def thumbnail(self, instance):
@@ -123,6 +122,11 @@ class CollectionAdmin(admin.ModelAdmin):
         return super().get_queryset(request).annotate(product_count=Count("products"))
 
 
+class CustomerAdressInline(admin.TabularInline):
+    model = models.Address
+    extra = 1
+
+
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ["first_name", "last_name", "membership", "orders"]
@@ -132,6 +136,7 @@ class CustomerAdmin(admin.ModelAdmin):
     ordering = ["user__first_name", "user__last_name"]
     search_fields = ["first_name__istartswith", "last_name__istartswith"]
     autocomplete_fields = ["user"]
+    inlines = [CustomerAdressInline]
 
     @admin.display(ordering="orders_count")
     def orders(self, customer):

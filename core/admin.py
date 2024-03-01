@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from store.admin import ProductAdmin, ProductImageInline
 from store.models import Product
 from tags.models import TaggedItem
-from store.models import User
+from core.models import User
 
 
 @admin.register(User)
