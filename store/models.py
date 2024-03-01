@@ -4,7 +4,6 @@ from django.core.validators import MinValueValidator
 from django.conf import settings
 from uuid import uuid4
 from .validators import validate_file_size
-import random
 
 
 class Promotion(models.Model):

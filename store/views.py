@@ -59,18 +59,26 @@ class ProductImageViewSet(ModelViewSet):
             return ProductImage.objects.filter(product_id=product_pk)
         return ProductImage.objects.all()
 
+    def create(self, request, *args, **kwargs):
+        if "products" not in request.path:
+            return Response(
+                {"detail": "POST method not allowed here."},
+                status=status.HTTP_405_METHOD_NOT_ALLOWED,
+            )
+        return super().create(request, *args, **kwargs)
+
     def get_serializer_context(self):
         product_pk = self.kwargs.get("product_pk")
         return {"product_id": product_pk} if product_pk is not None else {}
 
     def destroy(self, request, *args, **kwargs):
-        image_id = self.kwargs.get("image")
-        image = get_object_or_404(ProductImage, image_id)
+        image_id = self.kwargs.get("pk")
+        image = get_object_or_404(ProductImage, pk=image_id)
+        image.delete()
         try:
             os.remove(image.image.path)
         except FileNotFoundError:
             pass
-        image.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -137,9 +145,12 @@ class CollectionViewSet(ModelViewSet):
         return {"request": self.request}
 
     def destroy(self, request, *args, **kwargs):
-        if Product.objects.filter(collection_id=kwargs["pk"]).count() > 0:
+        product_count = Product.objects.filter(collection_id=kwargs["pk"]).count()
+        if product_count > 0:
             return Response(
-                {"error": f"Can not be deleted because collection has products"}
+                {
+                    "error": f"Can not be deleted because collection has {product_count} products"
+                }
             )
         return super().destroy(request, *args, **kwargs)
 
@@ -147,6 +158,16 @@ class CollectionViewSet(ModelViewSet):
 class AddressViewSet(ModelViewSet):
     serializer_class = AddressSerializer
     permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        if "customers" not in request.path:
+            return Response(
+                {"detail": "POST method not allowed here."},
+                status=status.HTTP_405_METHOD_NOT_ALLOWED,
+            )
+        return super().create(request, *args, **kwargs)
+
+        
 
     def get_queryset(self):
         user = self.request.user
