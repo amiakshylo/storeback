@@ -6,6 +6,7 @@ from store.models import Product
 from tags.models import TaggedItem
 from .models import User
 
+
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
@@ -13,22 +14,31 @@ class UserAdmin(BaseUserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("username", "password1", "password2", 'email', 'first_name', 'last_name'),
+                "fields": (
+                    "username",
+                    "password1",
+                    "password2",
+                    "email",
+                    "first_name",
+                    "last_name",
+                ),
             },
         ),
     )
 
-"""Editing Children Using Generic (универсальние) Relations """
+
+"""Editing Children Using Generic Relations """
 """We create new custom_store for keepink independancy berween apps"""
+
+
 class TagInline(GenericTabularInline):
     model = TaggedItem
-    autocomplete_fields = ['tag']
-    
+    autocomplete_fields = ["tag"]
+
+
 class CustomProductAdmin(ProductAdmin):
     inlines = [TagInline, ProductImageInline]
-    
+
+
 admin.site.unregister(Product)
 admin.site.register(Product, CustomProductAdmin)
-
-    
-
