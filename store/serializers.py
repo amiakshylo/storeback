@@ -2,7 +2,7 @@ from store.signals import order_crated
 from rest_framework import serializers
 from decimal import Decimal
 from django.db import transaction
-from .models import (
+from store.models import (
     Address,
     Cart,
     CartItem,

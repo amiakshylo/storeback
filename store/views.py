@@ -17,10 +17,10 @@ from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
     IsAdminUser,
 )
-from .pagination import DefaultPagination
-from .filters import ProductFilter, ReviewFilter
-from .permissions import FullDjangoModelPermissions, IsAdminOrReadOnly
-from .models import (
+from store.pagination import DefaultPagination
+from store.filters import ProductFilter, ReviewFilter
+from store.permissions import FullDjangoModelPermissions, IsAdminOrReadOnly
+from store.models import (
     Address,
     Cart,
     CartItem,
@@ -32,7 +32,7 @@ from .models import (
     Review,
     ProductImage,
 )
-from .serializers import (
+from store.serializers import (
     AddressSerializer,
     CartItemSerializer,
     CartSerializer,
@@ -166,8 +166,6 @@ class AddressViewSet(ModelViewSet):
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
         return super().create(request, *args, **kwargs)
-
-        
 
     def get_queryset(self):
         user = self.request.user

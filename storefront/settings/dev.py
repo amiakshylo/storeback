@@ -1,4 +1,4 @@
-from .common import *
+from storefront.settings.common import *
 
 
 SECRET_KEY = 'django-insecure-hs6j037urx6iav+7#10%-vu4l4f5@@-1_zo)oft4g7$vf2$jmp'
@@ -37,6 +37,6 @@ EMAIL_PORT = 2525
 #     MIDDLEWARE += ['silk.middleware.SilkyMiddleware']
 
 
-DEBUF_TOOLBAR_CONFIG = {
+DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda request: True
 } 
