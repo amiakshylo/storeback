@@ -55,7 +55,7 @@ class ProductImageViewSet(ModelViewSet):
 
     def get_queryset(self):
         product_pk = self.kwargs.get("product_pk")
-        if product_pk is not None:
+        if product_pk:
             return ProductImage.objects.filter(product_id=product_pk)
         return ProductImage.objects.all()
 
@@ -69,7 +69,7 @@ class ProductImageViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         product_pk = self.kwargs.get("product_pk")
-        return {"product_id": product_pk} if product_pk is not None else {}
+        return {"product_id": product_pk} if product_pk else {}
 
     def destroy(self, request, *args, **kwargs):
         image_id = self.kwargs.get("pk")
@@ -120,7 +120,7 @@ class ProductVievSet(ModelViewSet):
 
     def get_queryset(self):
         collection_pk = self.kwargs.get("collection_pk")
-        if collection_pk is not None:
+        if collection_pk:
             return Product.objects.filter(collection_id=collection_pk)
         else:
             return Product.objects.prefetch_related("images").all()
@@ -206,7 +206,7 @@ class ReviewViewSet(ModelViewSet):
 
     def get_queryset(self):
         product_pk = self.kwargs.get("product_pk")
-        if product_pk is not None:
+        if product_pk:
             return Review.objects.filter(product_id=product_pk)
         else:
             return Review.objects.all()
@@ -244,7 +244,7 @@ class OrderViewSet(ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:  # type: ignore
+        if user.is_staff:
             return Order.objects.all()
-        customer_id = Customer.objects.only("id").get(user_id=user.id)  # type: ignore
+        customer_id = Customer.objects.only("id").get(user_id=user.id)
         return Order.objects.filter(customer_id=customer_id)
