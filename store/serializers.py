@@ -52,7 +52,7 @@ class ProductSerializer(serializers.ModelSerializer):
     price = serializers.DecimalField(
         max_digits=6, decimal_places=2, source="unit_price"
     )
-    price_with_tax = serializers.SerializerMethodField(method_name="calculate_tax")
+    price_with_tax = serializers.SerializerMethodField(method_name='calculate_tax')
     reviews_count = serializers.IntegerField(read_only=True)
 
     class Meta:

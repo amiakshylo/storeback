@@ -2,13 +2,11 @@ from datetime import timedelta
 from pathlib import Path
 import os
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 DEFAULT_FROM_EMAIL = "from@andrii.com"
 
 ADMINS = [("Andrii", "admin@gmail.com")]
-
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -48,7 +46,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
@@ -75,7 +72,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "storefront.wsgi.application"
 
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -91,7 +87,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "MST"
@@ -102,16 +97,13 @@ USE_L10N = True
 
 USE_TZ = False
 
-
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 
 REST_FRAMEWORK = {
     "COERCE_DECIMAL_TO_STRING": False,
@@ -134,7 +126,6 @@ DJOSER = {
     }
 }
 
-
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTU = True
 CELERY_BEAT_SCHEDULE = {
     "notify_customers": {
@@ -143,7 +134,6 @@ CELERY_BEAT_SCHEDULE = {
         "args": ["Hello World"],
     }
 }
-
 
 LOGGING = {
     "version": 1,

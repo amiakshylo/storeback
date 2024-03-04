@@ -3,6 +3,9 @@ from django.contrib import admin
 from django.core.validators import MinValueValidator
 from django.conf import settings
 from uuid import uuid4
+
+from django.db.models import CharField
+
 from store.validators import validate_file_size
 
 
@@ -17,7 +20,7 @@ class Collection(models.Model):
         "Product", on_delete=models.SET_NULL, null=True, related_name="+"
     )
 
-    def __str__(self) -> str:
+    def __str__(self) -> CharField:
         return self.title
 
     class Meta:
@@ -38,7 +41,7 @@ class Product(models.Model):
     )
     promotions = models.ManyToManyField(Promotion, blank=True)
 
-    def __str__(self) -> str:
+    def __str__(self) -> CharField:
         return self.title
 
     class Meta:
