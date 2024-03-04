@@ -28,7 +28,7 @@ class UserAdmin(BaseUserAdmin):
 
 
 """Editing Children Using Generic Relations """
-"""We create new custom_store for keepink independancy berween apps"""
+"""Create new custom_store for keeping independency between apps"""
 
 
 class TagInline(GenericTabularInline):
@@ -37,7 +37,7 @@ class TagInline(GenericTabularInline):
 
 
 class CustomProductAdmin(ProductAdmin):
-    inlines = [TagInline, ProductImageInline]
+    inlines = [ProductImageInline]
 
 
 admin.site.unregister(Product)

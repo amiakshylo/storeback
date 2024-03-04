@@ -65,9 +65,9 @@ class ProductAdmin(admin.ModelAdmin):
     def inventory_status(self, product):
         if 0 > product.inventory < 10:
             return "Low"
-        if product.inventory > 99:
+        elif product.inventory > 99:
             return "High"
-        if product.inventory == 0:
+        elif product.inventory == 0:
             return "Empty"
         return "OK"
 
@@ -122,7 +122,7 @@ class CollectionAdmin(admin.ModelAdmin):
         return super().get_queryset(request).annotate(product_count=Count("products"))
 
 
-class CustomerAdressInline(admin.TabularInline):
+class CustomerAddressInline(admin.TabularInline):
     model = models.Address
     extra = 1
 
@@ -136,7 +136,7 @@ class CustomerAdmin(admin.ModelAdmin):
     ordering = ["user__first_name", "user__last_name"]
     search_fields = ["first_name__istartswith", "last_name__istartswith"]
     autocomplete_fields = ["user"]
-    inlines = [CustomerAdressInline]
+    inlines = [CustomerAddressInline]
 
     @admin.display(ordering="orders_count")
     def orders(self, customer):
