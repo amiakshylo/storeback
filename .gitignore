@@ -6,4 +6,3 @@ general.log
 /migrations/
 celerybeat-schedule
 .vscode/
-/tags/
