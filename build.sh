@@ -10,3 +10,7 @@ python manage.py collectstatic --no-input
 # Apply any outstanding database migrations
 python manage.py migrate
 
+#Populate DB
+python manage.py seed_db
+
+
