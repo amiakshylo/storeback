@@ -26,6 +26,7 @@ gunicorn = "*"
 psycopg2-binary = "*"
 dj-database-url = "*"
 whitenoise = {extras = ["brotli"], version = "*"}
+virtualenvwrapper = "*"
 
 [dev-packages]
 pytest = "*"

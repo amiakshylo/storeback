@@ -55,7 +55,7 @@ class TestCreateCollection:
 
 @pytest.mark.django_db
 class TestRetrieveCollection:
-    def test_retrive_collection_list(self, api_client):
+    def test_retrieve_collection_list(self, api_client):
         response = api_client.get('/store/collections/')
 
         assert response.status_code == status.HTTP_200_OK
