@@ -1,5 +1,5 @@
 # Django E-commerce Store
-> Write a little description about your project. 2-3 sentances are enough.
+> This Django project is an e-commerce platform designed to facilitate online shopping. It includes features such as managing products, collections, orders, cart functionality, customer accounts, and user reviews.
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
