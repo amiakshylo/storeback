@@ -2,26 +2,26 @@ version: '4.2'
 services:
   web:
     build: .
-    command: ./wait-for-it.sh mysql:3306 -- ./docker-entrypoint.sh
+    command: ./wait-for-it.sh postgres:5432 -- ./docker-entrypoint.sh
     ports:
       - 8000:8000
     depends_on:
       - redis
-      - mysql
+      - postgres
     restart: on-failure
     volumes:
       - .:/app
-  mysql:
-    image: mysql:8.2
+  postgres:
+    image: postgres:latest
     ports:
-      - 3307:3306
+      - 5432:5432
     restart: always
     environment:
-      - MYSQL_DATABASE=storefront4
-      - MYSQL_ROOT_PASSWORD=P@ssword
-
+      - POSTGRES_DB=storedb
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=mypassword
     volumes:
-      - mysqldata:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
   redis:
     image: redis:7.2
     ports:
@@ -67,11 +67,11 @@ services:
     command: ./wait-for-it.sh mysql:3306 -- ptw
     depends_on:
       - redis
-      - mysql
+      - postgres
     tty: true
     volumes:
       - .:/app
 volumes:
-  mysqldata:
+  postgres_data:
   pgdata:
   redisdata:    
