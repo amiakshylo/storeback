@@ -7,10 +7,11 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'storefront3',
-        'HOST': 'mysql',
+        'NAME': 'storefront4',
+        'HOST': 'localhost',
         'USER': 'root',
-        'PASSWORD': 'P@ssword'
+        'PASSWORD': 'P@ssword',
+
     }
 }
 

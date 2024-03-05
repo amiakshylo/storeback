@@ -17,7 +17,7 @@ services:
       - 3307:3306
     restart: always
     environment:
-      - MYSQL_DATABASE=storefront3
+      - MYSQL_DATABASE=storefront4
       - MYSQL_ROOT_PASSWORD=P@ssword
 
     volumes:

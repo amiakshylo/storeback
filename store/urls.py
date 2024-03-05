@@ -35,6 +35,8 @@ address_router = routers.NestedDefaultRouter(router, "customers", lookup="custom
 address_router.register("addresses", views.AddressViewSet, basename="customer_address")
 
 
+
+
 urlpatterns = [
     path("", include(router.urls)),
     path("", include(products_router.urls)),

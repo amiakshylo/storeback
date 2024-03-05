@@ -5,4 +5,3 @@ general.log
 /media/
 /migrations/
 celerybeat-schedule
-.vscode/

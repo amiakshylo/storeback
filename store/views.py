@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.mixins import (
     CreateModelMixin,
     RetrieveModelMixin,
-    DestroyModelMixin,
+    DestroyModelMixin, ListModelMixin,
 )
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
@@ -116,7 +116,7 @@ class ProductViewSet(ModelViewSet):
     pagination_class = DefaultPagination
     search_fields = ["title", "description"]
     ordering_fields = ["unit_price", "last_update"]
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_queryset(self):
         collection_pk = self.kwargs.get("collection_pk")
@@ -198,11 +198,11 @@ class CustomerViewSet(ModelViewSet):
             return Response(serializers.data)
 
 
-# class ReviewViewSet(RetrieveModelMixin):
-#     serializer_class = ReviewSerializer
-#     permission_classes = [IsAuthenticatedOrReadOnly]
-#     filter_backends = [DjangoFilterBackend, SearchFilter]
-#     filterset_class = ReviewFilter
+class ReviewViewSet(ModelViewSet):
+    serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_class = ReviewFilter
 
     def get_queryset(self):
         product_pk = self.kwargs.get("product_pk")
