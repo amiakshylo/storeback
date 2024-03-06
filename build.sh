@@ -11,7 +11,7 @@ python manage.py collectstatic --no-input
 python manage.py migrate
 
 # Create superuser
-python manage.py createsuperuser_if_not_exists
+#python manage.py createsuperuser_if_not_exists
 
 #Populate DB
 #python manage.py seed_db
