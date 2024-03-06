@@ -12,7 +12,5 @@ python manage.py makemigrations
 
 python manage.py migrate
 
-# Populate DB
-python manage.py seed_db
 
 
