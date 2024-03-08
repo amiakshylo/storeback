@@ -19,14 +19,15 @@ celery = "*"
 redis = "*"
 flower = "*"
 pytest = "*"
-model-bakery = "==1.16.0"
+model-bakery = "*"
 django-silk = "*"
 django-redis = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
 dj-database-url = "*"
-whitenoise = {extras = ["brotli"], version = "*"}
+whitenoise = {extras = ["brotli"] }
 virtualenvwrapper = "*"
+psycopg2 = "*"
 
 [dev-packages]
 pytest = "*"
