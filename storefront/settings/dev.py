@@ -8,7 +8,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'storedb',
-        'HOST': 'localhost',
+        'HOST': 'postgres',
         'USER': 'root',
         'PASSWORD': 'mypassword',
         'PORT': '5432',
@@ -40,3 +40,5 @@ EMAIL_PORT = 2525
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda request: True
 }
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'http://192.168.22.2/']

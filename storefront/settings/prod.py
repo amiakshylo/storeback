@@ -6,7 +6,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 DEBUG = False
 
-ALLOWED_HOSTS = ["mysite-q0bo.onrender.com"]
+
 
 DATABASES = {
     "default": dj_database_url.config(
