@@ -4,7 +4,7 @@ services:
     build: .
     command: ./wait-for-it.sh postgres:5432 -- ./docker-entrypoint.sh
     ports:
-      - 8000:8000
+      - 8001:8000
     depends_on:
       - redis
       - postgres
@@ -14,7 +14,7 @@ services:
   postgres:
     image: postgres:latest
     ports:
-      - 5433:5432
+      - 5432:5432
     restart: always
     environment:
       - POSTGRES_DB=storedb
@@ -61,7 +61,7 @@ services:
       - CELERY_BROKER=redis://redis:6379/0
       - CELERY_BACKEND=redis://redis:6379/0
     ports:
-      - 5555:5555
+      - 5556:5555
   tests:
     build: .
     command: ./wait-for-it.sh mysql:3306 -- ptw
