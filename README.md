@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://miro.medium.com/v2/resize:fit:1400/1*ZXiKkqYHWVk1EMp2TJeDcw.png" width="100" alt="project-logo">
+  <img src="https://miro.medium.com/v2/resize:fit:1400/1*ZXiKkqYHWVk1EMp2TJeDcw.png" width="300" alt="project-logo">
 </p>
 <p align="center">
     <h1 align="center">STOREBACK</h1>
