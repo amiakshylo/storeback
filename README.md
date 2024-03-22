@@ -20,17 +20,7 @@ git clone https://github.com/amiakshylo/storeback
 ```bash
 pipenv install
 ```
-
-
-For Linux and OS X
-
-`npm install project-name --save`
-
-For Windows
-
-`git clone project-url`
  
-
 ## Features
 * Product Management: Admins can add, edit, and delete products. Products can be categorized into collections.
 * Cart Functionality: Users can add products to their cart and proceed to checkout.
