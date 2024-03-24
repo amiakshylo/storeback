@@ -10,4 +10,7 @@ class LikedItem(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()
 
+    class Meta:
+        unique_together = ('user', 'content_type', 'object_id')
+
 

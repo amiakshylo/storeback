@@ -123,10 +123,11 @@ class ProductViewSet(ModelViewSet):
         if collection_pk:
             return Product.objects.filter(collection_id=collection_pk)
         else:
-            return Product.objects.prefetch_related("images").all()
+            return Product.objects.prefetch_related("images").annotate(reviews_count=Count("reviews")).all()
 
     def destroy(self, request, *args, **kwargs):
-        if OrderItem.objects.filter(product_id=kwargs["pk"]).count() > 0:
+        product_id = kwargs["pk"]
+        if OrderItem.objects.filter(product_id=product_id).count() > 0:
             return Response(
                 {
                     "error": "Product can not be deleted because it is associated with an order item "
