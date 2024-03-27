@@ -1,9 +1,14 @@
 import os
-from django.db.models.aggregates import Count
+
+from django.contrib.auth.models import AnonymousUser
+from django.contrib.contenttypes.models import ContentType
+from django.db.models.functions import Coalesce
+from django.db.models import Count, OuterRef, Subquery, IntegerField
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
 from rest_framework import status
+
 from rest_framework.mixins import (
     CreateModelMixin,
     RetrieveModelMixin,
@@ -17,6 +22,8 @@ from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
     IsAdminUser,
 )
+
+from likes.models import LikedItem
 from store.pagination import DefaultPagination
 from store.filters import ProductFilter, ReviewFilter
 from store.permissions import FullDjangoModelPermissions, IsAdminOrReadOnly
@@ -119,11 +126,24 @@ class ProductViewSet(ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
 
     def get_queryset(self):
-        collection_pk = self.kwargs.get("collection_pk")
-        if collection_pk:
-            return Product.objects.filter(collection_id=collection_pk)
-        else:
-            return Product.objects.prefetch_related("images").annotate(reviews_count=Count("reviews")).all()
+        product_content_type = ContentType.objects.get_for_model(Product)
+        likes_subquery = Subquery(
+            LikedItem.objects
+            .filter(
+                content_type=product_content_type,
+                object_id=OuterRef('pk')
+            )
+            .values('object_id')
+            .annotate(cnt=Count('id'))
+            .values('cnt')[:1],
+            output_field=IntegerField(),
+        )
+
+        queryset = (Product.objects
+                    .prefetch_related("images")
+                    .annotate(reviews_count=Count("reviews"))
+                    .annotate(likes_count=Coalesce(likes_subquery, 0)))  # Use Coalesce to ensure zeros instead of NULLs
+        return queryset
 
     def destroy(self, request, *args, **kwargs):
         product_id = kwargs["pk"]
@@ -135,6 +155,45 @@ class ProductViewSet(ModelViewSet):
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
         return super().destroy(request, *args, **kwargs)
+
+    @action(detail=True, methods=['get', 'post'])
+    def like(self, request, pk=None):
+        if isinstance(request.user, AnonymousUser):
+            return Response({"error": "Authentication required"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        product = self.get_object()
+        user = request.user
+
+        liked_item, created = LikedItem.objects.get_or_create(
+            user=user,
+            content_type=ContentType.objects.get_for_model(Product),
+            object_id=product.id
+        )
+
+        if created:
+            return Response({"message": "Product liked successfully"}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"message": "Product already liked"}, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['get', 'post'])
+    def unlike(self, request, pk=None):
+        if isinstance(request.user, AnonymousUser):
+            return Response({"error": "Authentication required"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        product = self.get_object()
+        user = request.user
+
+        liked_item = LikedItem.objects.filter(
+            user=user,
+            content_type=ContentType.objects.get_for_model(Product),
+            object_id=product.id
+        )
+
+        if liked_item.exists():
+            liked_item.delete()
+            return Response({"message": "Product unliked successfully"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "Product not liked yet"}, status=status.HTTP_200_OK)
 
 
 class CollectionViewSet(ModelViewSet):

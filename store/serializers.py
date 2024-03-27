@@ -54,6 +54,7 @@ class ProductSerializer(serializers.ModelSerializer):
     )
     price_with_tax = serializers.SerializerMethodField(method_name='calculate_tax')
     reviews = serializers.IntegerField(read_only=True, source='reviews_count')
+    likes = serializers.IntegerField(read_only=True, source='likes_count')
 
     class Meta:
         model = Product
@@ -67,6 +68,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "collection",
             "reviews",
             "images",
+            "likes",
         ]
 
     def calculate_tax(self, product: Product):
