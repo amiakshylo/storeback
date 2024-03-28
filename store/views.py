@@ -139,11 +139,10 @@ class ProductViewSet(ModelViewSet):
             output_field=IntegerField(),
         )
 
-        queryset = (Product.objects
-                    .prefetch_related("images")
-                    .annotate(reviews_count=Count("reviews"))
-                    .annotate(likes_count=Coalesce(likes_subquery, 0)))  # Use Coalesce to ensure zeros instead of NULLs
-        return queryset
+        return (Product.objects
+                .prefetch_related("images")
+                .annotate(reviews_count=Count("reviews"))
+                .annotate(likes_count=Coalesce(likes_subquery, 0)))  # Using Coalesce to ensure zeros instead of NULLs
 
     def destroy(self, request, *args, **kwargs):
         product_id = kwargs["pk"]
