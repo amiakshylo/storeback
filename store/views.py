@@ -122,7 +122,7 @@ class ProductViewSet(ModelViewSet):
     filterset_class = ProductFilter
     pagination_class = DefaultPagination
     search_fields = ["title", "description"]
-    ordering_fields = ["unit_price", "last_update"]
+    ordering_fields = ["unit_price", "last_update", "likes_count"]
     permission_classes = [IsAdminOrReadOnly]
 
     def get_queryset(self):
@@ -155,7 +155,7 @@ class ProductViewSet(ModelViewSet):
             )
         return super().destroy(request, *args, **kwargs)
 
-    @action(detail=True, methods=['get', 'post'])
+    @action(detail=True, methods=['get'])
     def like(self, request, pk=None):
         if isinstance(request.user, AnonymousUser):
             return Response({"error": "Authentication required"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -174,7 +174,7 @@ class ProductViewSet(ModelViewSet):
         else:
             return Response({"message": "Product already liked"}, status=status.HTTP_200_OK)
 
-    @action(detail=True, methods=['get', 'post'])
+    @action(detail=True, methods=['get'])
     def unlike(self, request, pk=None):
         if isinstance(request.user, AnonymousUser):
             return Response({"error": "Authentication required"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -187,7 +187,6 @@ class ProductViewSet(ModelViewSet):
             content_type=ContentType.objects.get_for_model(Product),
             object_id=product.id
         )
-
         if liked_item.exists():
             liked_item.delete()
             return Response({"message": "Product unliked successfully"}, status=status.HTTP_200_OK)
