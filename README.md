@@ -67,7 +67,6 @@ The Storeback project is an open-source e-commerce platform with robust features
     ├── Pipfile
     ├── Pipfile.lock
     ├── README.md
-    ├── build.sh
     ├── core
     │   ├── __init__.py
     │   ├── admin.py

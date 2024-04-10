@@ -1,24 +1,25 @@
-FROM python:3.10
+ARG PYTHON_VERSION=3.10-slim-bullseye
 
-ENV PYTHONUNBUFFERED=1
-WORKDIR /app
+FROM python:${PYTHON_VERSION}
 
-# Required to install mysqlclient with Pip
-RUN apt-get update \
-  && apt-get install python3-dev default-libmysqlclient-dev gcc -y
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Install pipenv
-RUN pip install --upgrade pip 
+# install psycopg2 dependencies.
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /code
+
+WORKDIR /code
+
 RUN pip install pipenv
+COPY Pipfile Pipfile.lock /code/
+RUN pipenv install --deploy --system
+COPY . /code
 
-# Install application dependencies
-COPY Pipfile Pipfile.lock /app/
-# We use the --system flag so packages are installed into the system python
-# and not into a virtualenv. Docker containers don't need virtual environments. 
-RUN pipenv install --system --dev
-
-# Copy the application files into the image
-COPY . /app/
-
-# Expose port 8000 on the container
 EXPOSE 8000
+
+CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "storefront.wsgi"]

@@ -7,3 +7,5 @@ class CoreConfig(AppConfig):
 
     def ready(self) -> None:
         import core.signals.hendlers
+
+
