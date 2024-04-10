@@ -9,10 +9,10 @@ DEBUG = False
 
 DATABASES = {
     "default": dj_database_url.config(
-        default="postgres://postgres:storeback-ocean.flycast:5432",
+        default="postgres://postgres:iVHzXGtX4tkUlXj@storeback-db.flycast:5432",
         conn_max_age=600,
     )
 }
 
-ALLOWED_HOSTS = ['storeback-ocean.fly.dev']
-CSRF_TRUSTED_ORIGINS = ['https://storeback-ocean.fly.dev']
+ALLOWED_HOSTS = ['storeback.fly.dev']
+CSRF_TRUSTED_ORIGINS = ['https://storeback.fly.dev']
