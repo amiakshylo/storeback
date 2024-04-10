@@ -5,7 +5,7 @@
     <h1 align="center">STOREBACK</h1>
 </p>
 <p align="center">
-    <em>Empowering seamless app deployments and network readiness.</em>
+    <a rel="nofollow" href="https://storeback.fly.dev/">>>>Play with deployed project<<<</a>
 </p>
 <p align="center">
 	<img src="https://img.shields.io/github/license/amiakshylo/storeback?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
