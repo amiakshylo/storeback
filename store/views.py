@@ -241,7 +241,7 @@ class AddressViewSet(ModelViewSet):
 class CustomerViewSet(ModelViewSet):
     serializer_class = CustomerSerializer
     queryset = Customer.objects.prefetch_related("address").all()
-    permission_classes = [FullDjangoModelPermissions]
+    permission_classes = [IsAdminUser]
 
     @action(detail=False, methods=["GET", "PUT"], permission_classes=[IsAuthenticated])
     def me(self, request):
