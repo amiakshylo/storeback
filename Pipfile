@@ -22,11 +22,10 @@ model-bakery = "*"
 django-silk = "*"
 django-redis = "*"
 gunicorn = "*"
-psycopg2-binary = "*"
 dj-database-url = "*"
 whitenoise = {extras = ["brotli"] }
 virtualenvwrapper = "*"
-psycopg2 = "*"
+psycopg2-binary = "*"
 locust = "*"
 
 [dev-packages]
