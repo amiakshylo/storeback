@@ -29,11 +29,11 @@ address_router = routers.NestedDefaultRouter(router, "customers", lookup="custom
 address_router.register("addresses", views.AddressViewSet, basename="customer_address")
 
 urlpatterns = [
-    path("", include(router.urls)),
-    path("", include(products_router.urls)),
-    path("", include(customers_router.urls)),
-    path("", include(collections_router.urls)),
-    path("", include(cart_router.urls)),
-    path("", include(image_router.urls)),
-    path("", include(address_router.urls)),
+    path('', include(router.urls)),
+    path('', include(products_router.urls)),
+    path('', include(customers_router.urls)),
+    path('', include(collections_router.urls)),
+    path('', include(cart_router.urls)),
+    path('', include(image_router.urls)),
+    path('', include(address_router.urls)),
 ]

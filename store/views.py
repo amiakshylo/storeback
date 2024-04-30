@@ -145,8 +145,7 @@ class ProductViewSet(ModelViewSet):
                 .annotate(likes_count=Coalesce(likes_subquery, 0)))  # Using Coalesce to ensure zeros instead of NULLs
 
     def destroy(self, request, *args, **kwargs):
-        product_id = kwargs["pk"]
-        if OrderItem.objects.filter(product_id=product_id).count() > 0:
+        if OrderItem.objects.filter(product_id=self.kwargs["pk"]) > 0:
             return Response(
                 {
                     "error": "Product can not be deleted because it is associated with an order item "
@@ -227,14 +226,14 @@ class AddressViewSet(ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:  # type: ignore
+        if user.is_staff:
             return Address.objects.all()
         else:
             customer_id = Customer.objects.only("id").get(user_id=user.id)  # type: ignore
             return Address.objects.filter(customer_id=customer_id)
 
     def get_serializer_context(self, *args, **kwargs):
-        customer_pk = self.kwargs.get("customer_pk")
+        customer_pk = self.request.query_params.get('customer_pk')
         return {"customer_id": customer_pk}
 
 
