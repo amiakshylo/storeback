@@ -16,6 +16,18 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'localstorebackdb',
+#         'HOST': 'localhost',
+#         'USER': 'postgres',
+#         'PASSWORD': 'password',
+#         'PORT': '5432',
+#
+#     }
+# }
+
 CELERY_BROKER_URL = 'redis://redis:6379/1'
 
 CACHES = {
@@ -34,8 +46,8 @@ EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORDS = ''
 EMAIL_PORT = 2525
 
-# if DEBUG:
-#     MIDDLEWARE += ['silk.middleware.SilkyMiddleware']
+if DEBUG:
+    MIDDLEWARE += ['silk.middleware.SilkyMiddleware']
 
 
 DEBUG_TOOLBAR_CONFIG = {

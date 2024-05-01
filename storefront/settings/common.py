@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "core",
 ]
 
+
 DEBUG_TOOLBAR_CONFIG = {
     "INTERCEPT_REDIRECTS": False,
 }
