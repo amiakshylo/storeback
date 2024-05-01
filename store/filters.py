@@ -15,5 +15,6 @@ class ReviewFilter(FilterSet):
     class Meta:
         model = Review
         fields = {
-            'id': ['exact']
+            'id': ['exact'],
+            'user': ['exact']
         }

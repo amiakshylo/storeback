@@ -33,6 +33,7 @@ EMAIL_HOST = 'smtp4dev'
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORDS = ''
 EMAIL_PORT = 2525
+
 # if DEBUG:
 #     MIDDLEWARE += ['silk.middleware.SilkyMiddleware']
 
