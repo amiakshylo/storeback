@@ -127,7 +127,7 @@ DJOSER = {
     }
 }
 
-CELERY_BROKER_CONNECTION_RETRY_ON_STARTU = True
+CELERY_BROKER_CONNECTION_RETRY_ON_START = True
 CELERY_BEAT_SCHEDULE = {
     "notify_customers": {
         "task": "playground.tasks.notify_customers",
