@@ -142,7 +142,7 @@ class ProductViewSet(ModelViewSet):
         return (Product.objects
                 .prefetch_related("images")
                 .annotate(reviews_count=Count("reviews"))
-                .annotate(likes_count=Coalesce(likes_subquery, 0)))  # Using Coalesce to ensure zeros instead of NULLs
+                .annotate(likes_count=Coalesce(likes_subquery, 0)))
 
     def destroy(self, request, *args, **kwargs):
         if OrderItem.objects.filter(product_id=self.kwargs["pk"]) > 0:
@@ -162,7 +162,7 @@ class ProductViewSet(ModelViewSet):
         product = self.get_object()
         user = request.user
 
-        liked_item, created = LikedItem.objects.get_or_create(
+        liked_item, created = LikedItem.objects.get(
             user=user,
             content_type=ContentType.objects.get_for_model(Product),
             object_id=product.id
@@ -275,7 +275,8 @@ class ReviewViewSet(ModelViewSet):
 
 
 class OrderViewSet(ModelViewSet):
-    # http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'option']
+    http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
+
     pagination_class = DefaultPagination
 
     def get_permissions(self):
