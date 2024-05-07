@@ -10,6 +10,7 @@ from rest_framework.decorators import action
 from rest_framework import status
 
 from rest_framework.mixins import (
+    ListModelMixin,
     CreateModelMixin,
     RetrieveModelMixin,
     DestroyModelMixin
@@ -37,7 +38,7 @@ from store.models import (
     Product,
     Collection,
     Review,
-    ProductImage,
+    ProductImage, FavoriteProduct,
 )
 from store.serializers import (
     AddressSerializer,
@@ -52,7 +53,9 @@ from store.serializers import (
     ReviewSerializer,
     AddCartItemSerializer,
     UpdateCartItemSerializer,
-    UpdateOrderSerializer,
+    UpdateOrderSerializer, FavoriteProductSerializer,
+    AddFavoriteProductSerializer
+
 )
 
 
@@ -192,6 +195,17 @@ class ProductViewSet(ModelViewSet):
         else:
             return Response({"message": "Product not liked yet"}, status=status.HTTP_200_OK)
 
+    @action(detail=True, methods=['get', 'post'])
+    def add_to_favorites(self, request, pk=None):
+        if isinstance(request.user, AnonymousUser):
+            return Response({"error": "Authentication required. Please log in to add products to favorites."},
+                            status=status.HTTP_401_UNAUTHORIZED)
+        product = self.get_object()
+        serializer = AddFavoriteProductSerializer(data={'user': request.user.id, 'product': product.id})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": f"Product '{product}' added to favorites"}, status=status.HTTP_201_CREATED)
+
 
 class CollectionViewSet(ModelViewSet):
     serializer_class = CollectionSerializer
@@ -306,3 +320,16 @@ class OrderViewSet(ModelViewSet):
             return Order.objects.all()
         customer_id = Customer.objects.only("id").get(user_id=user.id)
         return Order.objects.filter(customer_id=customer_id)
+
+
+class FavoriteProductViewSet(ListModelMixin, RetrieveModelMixin,
+                             DestroyModelMixin,
+                             GenericViewSet):
+    serializer_class = FavoriteProductSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return FavoriteProduct.objects.all()
+        user_id = self.request.user.id
+        return FavoriteProduct.objects.filter(user_id=user_id)

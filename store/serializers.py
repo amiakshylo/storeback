@@ -13,6 +13,7 @@ from store.models import (
     Collection,
     ProductImage,
     Review,
+    FavoriteProduct,
 )
 
 
@@ -74,17 +75,27 @@ class ProductSerializer(serializers.ModelSerializer):
     def calculate_tax(self, product: Product):
         return product.unit_price * Decimal(1.1)
 
-    """Validation data example"""
-    # def validate(self, data):
-    #     if data['password'] != data['confirm_password']:
-    #         return serializers.ValidationError('Passwort do not match')
-    #     return data
+
+class AddFavoriteProductSerializer(serializers.ModelSerializer):
+    product = ProductSerializer
+
+    class Meta:
+        model = FavoriteProduct
+        fields = ["id", "product", "user"]
 
 
 class SimpleProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ["id", "title", "unit_price"]
+
+
+class FavoriteProductSerializer(serializers.ModelSerializer):
+    product = SimpleProductSerializer(read_only=True)
+
+    class Meta:
+        model = FavoriteProduct
+        fields = ["id", "product"]
 
 
 class CartItemSerializer(serializers.ModelSerializer):
@@ -209,4 +220,3 @@ class UpdateCartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
         fields = ["quantity"]
-
