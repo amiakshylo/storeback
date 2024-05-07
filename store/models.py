@@ -144,3 +144,11 @@ class CartItem(models.Model):
 
     class Meta:
         unique_together = [["cart", "product"]]
+
+
+class FavoriteProducts(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='favorites')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = [["product", "user"]]
