@@ -1,3 +1,5 @@
+from rest_framework.fields import SerializerMethodField
+
 from store.signals import order_crated
 from rest_framework import serializers
 from decimal import Decimal

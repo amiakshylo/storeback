@@ -157,33 +157,24 @@ class ProductViewSet(ModelViewSet):
             )
         return super().destroy(request, *args, **kwargs)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=['get'], permission_classes=[IsAuthenticated])
     def like(self, request, pk=None):
-        if isinstance(request.user, AnonymousUser):
-            return Response({"error": "Authentication required"}, status=status.HTTP_401_UNAUTHORIZED)
-
         product = self.get_object()
         user = request.user
-
-        liked_item, created = LikedItem.objects.get(
+        liked_item, created = LikedItem.objects.get_or_create(
             user=user,
             content_type=ContentType.objects.get_for_model(Product),
             object_id=product.id
         )
-
         if created:
             return Response({"message": "Product liked successfully"}, status=status.HTTP_201_CREATED)
         else:
             return Response({"message": "Product already liked"}, status=status.HTTP_200_OK)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=['get'], permission_classes=[IsAuthenticated])
     def unlike(self, request, pk=None):
-        if isinstance(request.user, AnonymousUser):
-            return Response({"error": "Authentication required"}, status=status.HTTP_401_UNAUTHORIZED)
-
         product = self.get_object()
         user = request.user
-
         liked_item = LikedItem.objects.filter(
             user=user,
             content_type=ContentType.objects.get_for_model(Product),
@@ -195,16 +186,15 @@ class ProductViewSet(ModelViewSet):
         else:
             return Response({"message": "Product not liked yet"}, status=status.HTTP_200_OK)
 
-    @action(detail=True, methods=['get', 'post'])
+    @action(detail=True, methods=['get'], permission_classes=[IsAuthenticated])
     def add_to_favorites(self, request, pk=None):
-        if isinstance(request.user, AnonymousUser):
-            return Response({"error": "Authentication required. Please log in to add products to favorites."},
-                            status=status.HTTP_401_UNAUTHORIZED)
+        if FavoriteProduct.objects.filter(user=request.user, product=pk).exists():
+            return Response({"message": "Product has already existed in favorites"}, status=status.HTTP_200_OK)
         product = self.get_object()
         serializer = AddFavoriteProductSerializer(data={'user': request.user.id, 'product': product.id})
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"message": f"Product '{product}' added to favorites"}, status=status.HTTP_201_CREATED)
+        return Response({"message": f"Product '{product}' has added to favorites"}, status=status.HTTP_201_CREATED)
 
 
 class CollectionViewSet(ModelViewSet):
@@ -256,6 +246,9 @@ class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.prefetch_related("address").all()
     permission_classes = [IsAdminUser]
 
+    def get_serializer_context(self):
+        return {'request': self.request}
+
     @action(detail=False, methods=["GET", "PUT"], permission_classes=[IsAuthenticated])
     def me(self, request):
         customer = Customer.objects.get(user_id=request.user.id)
@@ -283,7 +276,7 @@ class ReviewViewSet(ModelViewSet):
             return Review.objects.all()
 
     def get_serializer_context(self, *args, **kwargs):
-        username = self.request.user.username  # type: ignore
+        username = self.request.user.username
         product_id = self.kwargs.get("product_pk")
         return {"product_id": product_id, "username": username}
 
@@ -333,3 +326,7 @@ class FavoriteProductViewSet(ListModelMixin, RetrieveModelMixin,
             return FavoriteProduct.objects.all()
         user_id = self.request.user.id
         return FavoriteProduct.objects.filter(user_id=user_id)
+
+    # @action(detail=True, methods=["GET"])
+    # def buy_product(self, request):
+
