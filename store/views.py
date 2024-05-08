@@ -220,25 +220,17 @@ class AddressViewSet(ModelViewSet):
     serializer_class = AddressSerializer
     permission_classes = [IsAuthenticated]
 
-    def create(self, request, *args, **kwargs):
-        if "customers" not in request.path:
-            return Response(
-                {"detail": "POST method not allowed here."},
-                status=status.HTTP_405_METHOD_NOT_ALLOWED,
-            )
-        return super().create(request, *args, **kwargs)
-
     def get_queryset(self):
         user = self.request.user
         if user.is_staff:
             return Address.objects.all()
         else:
-            customer_id = Customer.objects.only("id").get(user_id=user.id)  # type: ignore
+            customer_id = Customer.objects.only("id").get(user_id=user.id)
             return Address.objects.filter(customer_id=customer_id)
 
     def get_serializer_context(self, *args, **kwargs):
-        customer_pk = self.request.query_params.get('customer_pk')
-        return {"customer_id": customer_pk}
+        customer_id = self.request.user.id
+        return {'customer_id': customer_id}
 
 
 class CustomerViewSet(ModelViewSet):
@@ -329,4 +321,3 @@ class FavoriteProductViewSet(ListModelMixin, RetrieveModelMixin,
 
     # @action(detail=True, methods=["GET"])
     # def buy_product(self, request):
-
