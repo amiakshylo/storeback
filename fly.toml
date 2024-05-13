@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for storeback on 2024-04-10T13:59:36-06:00
+# fly.toml app configuration file generated for storeback on 2024-05-13T15:28:33-06:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -9,14 +9,12 @@ console_command = '/code/manage.py shell'
 
 [build]
 
-[env]
-  DJANGO_SETTINGS_MODULE = "storefront.settings.prod"
-  PORT = '8000'
-
 [deploy]
   release_command = 'python manage.py migrate --noinput'
 
-
+[env]
+  DJANGO_SETTINGS_MODULE = 'storefront.settings.prod'
+  PORT = '8000'
 
 [http_service]
   internal_port = 8000

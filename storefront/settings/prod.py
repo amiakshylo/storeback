@@ -9,7 +9,7 @@ DEBUG = False
 
 DATABASES = {
     "default": dj_database_url.config(
-        default="postgres://postgres:iVHzXGtX4tkUlXj@storeback-db.flycast:5432",
+        default="postgres://postgres:rV2fKpj02OtDHGX@storedb.flycast:5432",
         conn_max_age=600,
     )
 }
