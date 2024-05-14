@@ -16,6 +16,7 @@ RUN mkdir -p /code
 WORKDIR /code
 
 RUN pip install pipenv
+RUN python manage.py collectstatic --noinput
 COPY Pipfile Pipfile.lock /code/
 RUN pipenv install --deploy --system
 COPY . /code
