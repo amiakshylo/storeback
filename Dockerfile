@@ -15,11 +15,15 @@ RUN mkdir -p /code
 
 WORKDIR /code
 
-RUN pip install pipenv
-RUN python manage.py collectstatic --noinput
-COPY Pipfile Pipfile.lock /code/
-RUN pipenv install --deploy --system
+# Copy necessary files
 COPY . /code
+
+# Install pipenv and dependencies
+RUN pip install pipenv && \
+    pipenv install --deploy --system
+
+# Collect static files
+RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 

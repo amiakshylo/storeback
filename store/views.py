@@ -1,9 +1,9 @@
 import os
 
-from django.contrib.auth.models import AnonymousUser
+
 from django.contrib.contenttypes.models import ContentType
-from django.db.models.functions import Coalesce
-from django.db.models import Count, OuterRef, Subquery, IntegerField
+from django.db.models.functions import Coalesce, Round
+from django.db.models import Count, OuterRef, Subquery, IntegerField, Avg
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
@@ -27,7 +27,7 @@ from rest_framework.permissions import (
 from likes.models import LikedItem
 from store.pagination import DefaultPagination
 from store.filters import ProductFilter, ReviewFilter
-from store.permissions import FullDjangoModelPermissions, IsAdminOrReadOnly
+from store.permissions import IsAdminOrReadOnly
 from store.models import (
     Address,
     Cart,
@@ -38,7 +38,7 @@ from store.models import (
     Product,
     Collection,
     Review,
-    ProductImage, FavoriteProduct,
+    ProductImage, FavoriteProduct, ProductRanking,
 )
 from store.serializers import (
     AddressSerializer,
@@ -54,7 +54,7 @@ from store.serializers import (
     AddCartItemSerializer,
     UpdateCartItemSerializer,
     UpdateOrderSerializer, FavoriteProductSerializer,
-    AddFavoriteProductSerializer
+    AddFavoriteProductSerializer, ProductRankingSerializer
 
 )
 
@@ -143,8 +143,9 @@ class ProductViewSet(ModelViewSet):
         )
 
         return (Product.objects
-                .prefetch_related("images")
-                .annotate(reviews_count=Count("reviews"))
+                .prefetch_related('images')
+                .annotate(ranking=Avg('rankings__ranking'))
+                .annotate(reviews_count=(Count("reviews")))
                 .annotate(likes_count=Coalesce(likes_subquery, 0)))
 
     def destroy(self, request, *args, **kwargs):
@@ -319,5 +320,29 @@ class FavoriteProductViewSet(ListModelMixin, RetrieveModelMixin,
         user_id = self.request.user.id
         return FavoriteProduct.objects.filter(user_id=user_id)
 
-    # @action(detail=True, methods=["GET"])
-    # def buy_product(self, request):
+
+class ProductRankingViewSet(RetrieveModelMixin, CreateModelMixin, GenericViewSet):
+    serializer_class = ProductRankingSerializer
+
+    def get_permissions(self):
+        if self.request.method in ["GET"]:
+            return [IsAdminOrReadOnly()]
+        return [IsAuthenticated()]
+
+    def get_queryset(self):
+        product_id = self.kwargs.get('product_pk')
+        return ProductRanking.objects.filter(product_id=product_id)
+
+    def list(self, request, *args, **kwargs):
+        product_id = self.kwargs.get('product_pk')
+        avg_ranking = (ProductRanking.objects
+        .filter(product_id=product_id)
+        .aggregate(avg_ranking=Round(Avg('ranking'), 1))['avg_ranking'])
+        return Response({'average_ranking': avg_ranking})
+
+    def get_serializer_context(self):
+        product_id = self.kwargs.get('product_pk')
+        user_id = self.request.user.id
+        return {'product_id': product_id,
+                'user_id': user_id
+                }

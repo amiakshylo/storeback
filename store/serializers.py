@@ -1,3 +1,5 @@
+from django.db.models import Avg
+from django.db.models.functions import Round
 from rest_framework.fields import SerializerMethodField
 
 from store.signals import order_crated
@@ -15,7 +17,7 @@ from store.models import (
     Collection,
     ProductImage,
     Review,
-    FavoriteProduct,
+    FavoriteProduct, ProductRanking,
 )
 
 
@@ -50,6 +52,19 @@ class ReviewSerializer(serializers.ModelSerializer):
         return Review.objects.create(product_id=product_id, user=user, **validated_data)
 
 
+class ProductRankingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductRanking
+        fields = ['ranking']
+
+    def create(self, validated_data):
+        product_id = self.context['product_id']
+        user_id = self.context['user_id']
+        if ProductRanking.objects.filter(product_id=product_id, user_id=user_id).exists():
+            raise serializers.ValidationError('You have already ranked this product')
+        return ProductRanking.objects.create(product_id=product_id, user_id=user_id, **validated_data)
+
+
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
     price = serializers.DecimalField(
@@ -58,6 +73,7 @@ class ProductSerializer(serializers.ModelSerializer):
     price_with_tax = serializers.SerializerMethodField(method_name='calculate_tax')
     reviews = serializers.IntegerField(read_only=True, source='reviews_count')
     likes = serializers.IntegerField(read_only=True, source='likes_count')
+    average_ranking = serializers.IntegerField(read_only=True, source='ranking')
 
     class Meta:
         model = Product
@@ -72,10 +88,13 @@ class ProductSerializer(serializers.ModelSerializer):
             "reviews",
             "images",
             "likes",
+            "average_ranking"
         ]
 
     def calculate_tax(self, product: Product):
-        return product.unit_price * Decimal(1.1)
+        tax_value = product.unit_price * Decimal(1.1)
+        rounded_tax = round(tax_value, 2)
+        return rounded_tax
 
 
 class AddFavoriteProductSerializer(serializers.ModelSerializer):

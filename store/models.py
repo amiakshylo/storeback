@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib import admin
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from uuid import uuid4
 
@@ -152,3 +152,27 @@ class FavoriteProduct(models.Model):
 
     class Meta:
         unique_together = [["product", "user"]]
+
+
+class ProductRanking(models.Model):
+    RANKING_1 = 1
+    RANKING_2 = 2
+    RANKING_3 = 3
+    RANKING_4 = 4
+    RANKING_5 = 5
+    RANKING_CHOICES = [
+        (RANKING_1, 'Ranking 1'),
+        (RANKING_2, 'Ranking 2'),
+        (RANKING_3, 'Ranking 3'),
+        (RANKING_4, 'Ranking 4'),
+        (RANKING_5, 'Ranking 5'),
+    ]
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='rankings')
+    ranking = models.IntegerField(choices=RANKING_CHOICES)
+    user = models.ForeignKey(Customer, on_delete=models.DO_NOTHING)
+
+    class Meta:
+        unique_together = ['product', 'user']
+
+    def __str__(self):
+        return f'{self.ranking}'

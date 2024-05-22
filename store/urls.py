@@ -15,7 +15,7 @@ products_router = routers.NestedDefaultRouter(router, "products", lookup="produc
 products_router.register("reviews", views.ReviewViewSet, basename="product-reviews")
 
 collections_router = routers.NestedDefaultRouter(router, "collections", lookup="collection")
-collections_router.register(    "products", views.ProductViewSet, basename="collection-product")
+collections_router.register("products", views.ProductViewSet, basename="collection-product")
 
 customers_router = routers.NestedDefaultRouter(router, "customers", lookup="customer")
 customers_router.register("orders", views.OrderViewSet, basename="customer-order")
@@ -27,7 +27,10 @@ image_router = routers.NestedDefaultRouter(router, "products", lookup="product")
 image_router.register("images", views.ProductImageViewSet, basename="product_images")
 
 address_router = routers.NestedDefaultRouter(router, "customers", lookup="customer")
-address_router.register("addresses", views.AddressViewSet, basename="customer_address")
+address_router.register("addresses", views.AddressViewSet, basename="customer-address")
+
+ranking_router = routers.NestedDefaultRouter(router, "products", lookup='product')
+ranking_router.register('rankings', views.ProductRankingViewSet, basename='product-ranking')
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -37,4 +40,5 @@ urlpatterns = [
     path('', include(cart_router.urls)),
     path('', include(image_router.urls)),
     path('', include(address_router.urls)),
+    path('', include(ranking_router.urls))
 ]
