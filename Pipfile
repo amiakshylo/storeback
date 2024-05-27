@@ -27,6 +27,9 @@ whitenoise = {extras = ["brotli"] }
 virtualenvwrapper = "*"
 psycopg2-binary = "*"
 locust = "*"
+pandas = "*"
+torch = "*"
+torchvision = "*"
 
 [dev-packages]
 pytest = "*"

@@ -1,7 +1,3 @@
-from django.db.models import Avg
-from django.db.models.functions import Round
-from rest_framework.fields import SerializerMethodField
-
 from store.signals import order_crated
 from rest_framework import serializers
 from decimal import Decimal
@@ -17,7 +13,7 @@ from store.models import (
     Collection,
     ProductImage,
     Review,
-    FavoriteProduct, ProductRanking,
+    FavoriteProduct, ProductRanking, ProductView,
 )
 
 
@@ -65,6 +61,12 @@ class ProductRankingSerializer(serializers.ModelSerializer):
         return ProductRanking.objects.create(product_id=product_id, user_id=user_id, **validated_data)
 
 
+class ProductViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductView
+        fields = ['id', 'timestamp']
+
+
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
     price = serializers.DecimalField(
@@ -74,6 +76,7 @@ class ProductSerializer(serializers.ModelSerializer):
     reviews = serializers.IntegerField(read_only=True, source='reviews_count')
     likes = serializers.IntegerField(read_only=True, source='likes_count')
     average_ranking = serializers.IntegerField(read_only=True, source='ranking')
+    views = serializers.SerializerMethodField(method_name='get_views_count')
 
     class Meta:
         model = Product
@@ -88,13 +91,17 @@ class ProductSerializer(serializers.ModelSerializer):
             "reviews",
             "images",
             "likes",
-            "average_ranking"
+            "average_ranking",
+            "views"
         ]
 
     def calculate_tax(self, product: Product):
         tax_value = product.unit_price * Decimal(1.1)
         rounded_tax = round(tax_value, 2)
         return rounded_tax
+
+    def get_views_count(self, product: Product):
+        return ProductView.objects.filter(product=product).count()
 
 
 class AddFavoriteProductSerializer(serializers.ModelSerializer):

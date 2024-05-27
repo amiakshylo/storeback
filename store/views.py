@@ -1,5 +1,5 @@
+import json
 import os
-
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.functions import Coalesce, Round
@@ -38,7 +38,7 @@ from store.models import (
     Product,
     Collection,
     Review,
-    ProductImage, FavoriteProduct, ProductRanking,
+    ProductImage, FavoriteProduct, ProductRanking, ProductView,
 )
 from store.serializers import (
     AddressSerializer,
@@ -57,6 +57,8 @@ from store.serializers import (
     AddFavoriteProductSerializer, ProductRankingSerializer
 
 )
+
+from .recommendations.recommendation_engine import load_model, recommend_products, load_metadata
 
 
 class ProductImageViewSet(ModelViewSet):
@@ -157,6 +159,39 @@ class ProductViewSet(ModelViewSet):
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
         return super().destroy(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+
+        if request.user.is_authenticated:
+            customer = Customer.objects.get(user=request.user)
+            ProductView.objects.create(product=instance, user=customer)
+
+            # Load the model metadata
+            metadata_path = 'store/recommendations/metadata.json'
+            num_users, num_products, embedding_size = load_metadata(metadata_path)
+
+            model_path = 'store/recommendations/recommendation_model.pth'
+            model = load_model(model_path, num_users, num_products, embedding_size)
+
+            # Get actual product IDs
+            product_ids = list(Product.objects.values_list('id', flat=True))
+            max_product_id = max(product_ids)
+
+            # Get recommendations
+            recommendations = recommend_products(customer.id, model, product_ids)
+            recommended_products = Product.objects.filter(id__in=recommendations)
+
+            # Serialize the recommended products
+            recommended_serializer = ProductSerializer(recommended_products, many=True)
+
+            response_data = serializer.data
+            response_data['recommendations'] = recommended_serializer.data
+
+            return Response(response_data)
+
+        return Response(serializer.data)
 
     @action(detail=True, methods=['get'], permission_classes=[IsAuthenticated])
     def like(self, request, pk=None):
@@ -328,10 +363,6 @@ class ProductRankingViewSet(RetrieveModelMixin, CreateModelMixin, GenericViewSet
         if self.request.method in ["GET"]:
             return [IsAdminOrReadOnly()]
         return [IsAuthenticated()]
-
-    def get_queryset(self):
-        product_id = self.kwargs.get('product_pk')
-        return ProductRanking.objects.filter(product_id=product_id)
 
     def list(self, request, *args, **kwargs):
         product_id = self.kwargs.get('product_pk')
