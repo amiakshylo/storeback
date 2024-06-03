@@ -100,7 +100,7 @@ class ProductSerializer(serializers.ModelSerializer):
         rounded_tax = round(tax_value, 2)
         return rounded_tax
 
-    def get_views_count(self, product: Product):
+    def get_views_count(self, product: Product):        
         return ProductView.objects.filter(product=product).count()
 
 

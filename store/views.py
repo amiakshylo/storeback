@@ -3,7 +3,7 @@ import os
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.functions import Coalesce, Round
-from django.db.models import Count, OuterRef, Subquery, IntegerField, Avg
+from django.db.models import Count, OuterRef, Subquery, IntegerField, Avg, Prefetch
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
@@ -132,23 +132,37 @@ class ProductViewSet(ModelViewSet):
 
     def get_queryset(self):
         product_content_type = ContentType.objects.get_for_model(Product)
+
+        # Subquery for likes count
         likes_subquery = Subquery(
-            LikedItem.objects
-            .filter(
+            LikedItem.objects.filter(
                 content_type=product_content_type,
                 object_id=OuterRef('pk')
-            )
-            .values('object_id')
+            ).values('object_id')
             .annotate(cnt=Count('id'))
             .values('cnt')[:1],
             output_field=IntegerField(),
         )
 
-        return (Product.objects
-                .prefetch_related('images')
-                .annotate(ranking=Avg('rankings__ranking'))
-                .annotate(reviews_count=(Count("reviews")))
-                .annotate(likes_count=Coalesce(likes_subquery, 0)))
+        # Subquery for view counts
+        view_counts_subquery = Subquery(
+            ProductView.objects.filter(
+                product_id=OuterRef('pk')
+            ).values('product_id')
+            .annotate(view_count=Count('id'))
+            .values('view_count')[:1],
+            output_field=IntegerField(),
+        )
+
+        # Annotate the main queryset
+        products = Product.objects.annotate(
+            ranking=Avg('rankings__ranking'),
+            reviews_count=Count('reviews'),
+            likes_count=Coalesce(likes_subquery, 0),
+            views_count=Coalesce(view_counts_subquery, 0)
+        ).prefetch_related('images')
+
+        return products
 
     def destroy(self, request, *args, **kwargs):
         if OrderItem.objects.filter(product_id=self.kwargs["pk"]) > 0:

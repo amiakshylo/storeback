@@ -1,3 +1,5 @@
+import logging
+
 import torch
 import torch.nn as nn
 
@@ -51,19 +53,45 @@ def load_metadata(metadata_path):
     return num_users, num_products, embedding_size
 
 
+# def recommend_products(user_id, model, product_ids, top_k=10):
+#     model.eval()
+#     user_tensor = torch.tensor([user_id], dtype=torch.long)
+#     valid_product_ids = [pid for pid in product_ids if pid < model.item_embedding.num_embeddings]
+#     product_tensor = torch.tensor(valid_product_ids, dtype=torch.long)
+#
+#     with torch.no_grad():
+#         scores = model(user_tensor.repeat(len(valid_product_ids)), product_tensor)
+#
+#     if len(valid_product_ids) < top_k:
+#         top_k = len(valid_product_ids)
+#
+#     _, recommended_indices = torch.topk(scores, top_k)
+#     recommended_products = [valid_product_ids[idx] for idx in recommended_indices]
+#
+#     return recommended_products
+
 def recommend_products(user_id, model, product_ids, top_k=10):
     model.eval()
     user_tensor = torch.tensor([user_id], dtype=torch.long)
+
+    # Handle missing product IDs
     valid_product_ids = [pid for pid in product_ids if pid < model.item_embedding.num_embeddings]
+    missing_product_ids = [pid for pid in product_ids if pid not in valid_product_ids]
+    if len(missing_product_ids) > 0:
+        logging.warning(f"Encountered {len(missing_product_ids)} missing product IDs during recommendation.")
+
     product_tensor = torch.tensor(valid_product_ids, dtype=torch.long)
 
     with torch.no_grad():
+        # Option 1: Efficient Top-K selection with smaller k initially
+        # topk_scores, topk_indices = torch.topk(scores, min(top_k, len(valid_product_ids)))
+        # recommended_indices = torch.topk(topk_scores, top_k)[1]  # Select top k from top min(top_k, len(valid_product_ids))
+
+        # Option 2: Utilize GPU-accelerated sorting (if applicable)
         scores = model(user_tensor.repeat(len(valid_product_ids)), product_tensor)
+        _, sorted_indices = torch.sort(scores, descending=True)
+        recommended_indices = sorted_indices[:top_k]
 
-    if len(valid_product_ids) < top_k:
-        top_k = len(valid_product_ids)
-
-    _, recommended_indices = torch.topk(scores, top_k)
     recommended_products = [valid_product_ids[idx] for idx in recommended_indices]
 
     return recommended_products

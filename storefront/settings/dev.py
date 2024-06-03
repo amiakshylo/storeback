@@ -15,7 +15,7 @@ DEBUG = True
 #
 #     }
 # }
-
+#
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -27,7 +27,6 @@ DATABASES = {
 
     }
 }
-
 CELERY_BROKER_URL = 'redis://redis:6379/1'
 
 CACHES = {
