@@ -3,7 +3,7 @@ import os
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.functions import Coalesce, Round
-from django.db.models import Count, OuterRef, Subquery, IntegerField, Avg, Prefetch
+from django.db.models import Count, OuterRef, Subquery, IntegerField, Avg, Q
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
@@ -150,7 +150,7 @@ class ProductViewSet(ModelViewSet):
                 product_id=OuterRef('pk')
             ).values('product_id')
             .annotate(view_count=Count('id'))
-            .values('view_count')[:1],
+            .values('view_count'),
             output_field=IntegerField(),
         )
 
@@ -159,8 +159,9 @@ class ProductViewSet(ModelViewSet):
             ranking=Avg('rankings__ranking'),
             reviews_count=Count('reviews'),
             likes_count=Coalesce(likes_subquery, 0),
-            views_count=Coalesce(view_counts_subquery, 0)
+            views_count=Count('views')
         ).prefetch_related('images')
+        print(str(products.query))
 
         return products
 
@@ -191,7 +192,6 @@ class ProductViewSet(ModelViewSet):
 
             # Get actual product IDs
             product_ids = list(Product.objects.values_list('id', flat=True))
-            max_product_id = max(product_ids)
 
             # Get recommendations
             recommendations = recommend_products(customer.id, model, product_ids)
@@ -207,15 +207,20 @@ class ProductViewSet(ModelViewSet):
 
         return Response(serializer.data)
 
-    @action(detail=True, methods=['get'], permission_classes=[IsAuthenticated])
-    def like(self, request, pk=None):
-        product = self.get_object()
-        user = request.user
+    @staticmethod
+    def _create_or_get_liked_item(product, user):
         liked_item, created = LikedItem.objects.get_or_create(
             user=user,
             content_type=ContentType.objects.get_for_model(Product),
             object_id=product.id
         )
+        return liked_item, created
+
+    @action(detail=True, methods=['get'], permission_classes=[IsAuthenticated])
+    def like(self, request, pk=None):
+        product = self.get_object()
+        user = request.user
+        liked_item, created = self._create_or_get_liked_item(product, user)
         if created:
             return Response({"message": "Product liked successfully"}, status=status.HTTP_201_CREATED)
         else:
@@ -225,11 +230,7 @@ class ProductViewSet(ModelViewSet):
     def unlike(self, request, pk=None):
         product = self.get_object()
         user = request.user
-        liked_item = LikedItem.objects.filter(
-            user=user,
-            content_type=ContentType.objects.get_for_model(Product),
-            object_id=product.id
-        )
+        liked_item, created = self._create_or_get_liked_item(product, user)
         if liked_item.exists():
             liked_item.delete()
             return Response({"message": "Product unliked successfully"}, status=status.HTTP_200_OK)
