@@ -4,7 +4,6 @@ SECRET_KEY = 'django-insecure-hs6j037urx6iav+7#10%-vu4l4f5@@-1_zo)oft4g7$vf2$jmp
 
 DEBUG = True
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -16,6 +15,18 @@ DATABASES = {
 
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'localstorebackdb',
+#         'USER': 'root',
+#         'PASSWORD': 'mypassword',
+#         'HOST': 'postgres',
+#         'PORT': '5432',
+#     }
+# }
+
 CELERY_BROKER_URL = 'redis://redis:6379/1'
 
 CACHES = {
@@ -42,4 +53,4 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda request: True
 }
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'http://192.168.22.2/']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.22.2', '0.0.0.0']

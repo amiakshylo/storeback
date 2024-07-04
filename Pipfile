@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 django = "*"
+async_timeout = "*"
 django-debug-toolbar = "*"
 djangorestframework = "*"
 drf-nested-routers = "*"
